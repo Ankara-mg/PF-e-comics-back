@@ -13,13 +13,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCharacters = void 0;
+//import { Request, Response } from 'express';
+// import { pool } from '../database';
+//import { QueryResult } from 'pg';
 const axios_1 = __importDefault(require("axios"));
-const getCharacters = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const getCharacters = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const allCharacters = [];
         let apidata = "https://comicvine.gamespot.com/api/characters/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json";
         let characters = yield axios_1.default.get(apidata);
         characters.data.results.map((char) => {
+            console.log(apidata);
             return allCharacters.push({
                 id: char.id,
                 name: char.name,
@@ -28,11 +32,10 @@ const getCharacters = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 origen: char.origin.name
             });
         });
-        return res.status(200).json(allCharacters);
+        return allCharacters;
     }
     catch (e) {
         console.log(e);
-        return res.status(500).json('error');
     }
 });
 exports.getCharacters = getCharacters;

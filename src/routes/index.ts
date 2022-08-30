@@ -1,7 +1,10 @@
-import {Router} from 'express';
+import { Router } from 'express';
+import charactersRoutes from './charactersRoutes';
+
+
 const router = Router();
 
-import { getCharacters } from '../controllers/index.controller';
-router.get('/characters', getCharacters);
+
+router.use('/characters', charactersRoutes);
 
 export default router;
