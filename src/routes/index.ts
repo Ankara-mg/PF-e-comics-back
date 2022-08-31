@@ -1,14 +1,7 @@
-import { Router } from 'express';
-import charactersRoutes from './charactersRoutes';
-import episodesRoutes from './episodesRoutes'
-
-
+const { Router } = require('express');
+import routesCharacter from './router.characters'
 const router = Router();
 
-
-router.use('/characters', charactersRoutes);
-router.use('/comics', episodesRoutes);
-
-
+router.use('/characters', routesCharacter )
 
 export default router;
