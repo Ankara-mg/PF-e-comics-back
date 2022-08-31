@@ -1,17 +1,17 @@
-import { Router } from 'express';
+import { Router,  } from 'express';
 import { Request, Response } from 'express';
-import { getCharacters } from '../controllers/characterController';
-import { getComics } from '../controllers/episodesController';
+import { getCharacters } from '../controller/controller.characters';
+import { getComics } from '../controller/episodesController';
 
 
 
 const router = Router()
 
 
-router.get('/',  async(req: Request, res: Response)=>{
+router.get('/',  async(req: Request, res: Response) => {
 
     try {
-        let allCharacters = await getCharacters()
+        let allCharacters = await getCharacters(req, res)
         // allCharacters?
         res.status(200).json(allCharacters)//:
         // res.status(400).send("No nay datos para mostrar")

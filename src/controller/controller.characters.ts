@@ -20,12 +20,12 @@ const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 export const getCharacters = async (req: Request, res: Response) => {
     try {
         const allCharacters: (object)[] = []
-        let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json&limit=4`
+        let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json&limit=10`
         let characters = await axios.get(apidata)
         characters.data.results.map((char: any) => {
-            console.log('DESC LENGTH', char.deck.length)
+            // console.log('DESC LENGTH', char.deck.length)
             return allCharacters.push({
-                //id: char.id,
+                id: char.id,
                 name: char.name,
                 description: char.deck,
                 image: char.image.original_url,
@@ -38,7 +38,7 @@ export const getCharacters = async (req: Request, res: Response) => {
         await db.Characters.bulkCreate(allCharacters)
         //await db.Characters.create({name: "batman", id: 1545})
 
-        console.log('allCharacters: ', allCharacters)
+        // console.log('allCharacters: ', allCharacters)
         res.send(allCharacters);
     } catch (e) {
         console.log(e);
