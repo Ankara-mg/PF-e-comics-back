@@ -1,16 +1,10 @@
-import { DataTypes, UUIDV1, Model } from 'sequelize'
-
-const sequelize = require('../db.ts')
-
-interface CharacterAttributes {
-    id: number;
-    name: string;
-    description?: string;
-    gender?: number;
-    image?: string;
-}
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const { DataTypes, UUIDV1 } = require('sequelize');
+const sequelize_1 = require("sequelize");
+const sequelize = require('../database/db.ts');
+// ¿Y ahora? D: 
 // interface CharacterCreateAttributes extends Optional<CharacterAttributes, "description" | "gender" | "image"> {}
-
 /* export class Character extends Model<CharacterAttributes> implements CharacterAttributes {
     public id!: number
     public name!: string
@@ -18,17 +12,9 @@ interface CharacterAttributes {
     public gender!: number
     public image!: string
 } */
-
-class CharacterModel extends Model implements CharacterAttributes {
-    id!: number;
-    name!: string;
-    description?: string;
-    gender?: number;
-    image?: string;
+class CharacterModel extends sequelize_1.Model {
 }
-
 CharacterModel.init({
-
     id: {
         type: DataTypes.INTEGER.UNSIGNED,
         unique: true,
@@ -40,7 +26,7 @@ CharacterModel.init({
         allowNull: false,
     },
     description: {
-        type: DataTypes.STRING,    
+        type: DataTypes.STRING,
     },
     gender: {
         type: DataTypes.INTEGER,
@@ -48,8 +34,5 @@ CharacterModel.init({
     image: {
         type: DataTypes.STRING,
     }
-}, {sequelize, timestamps: false})
-
-module.exports = CharacterModel
-
+}, { sequelize, timestamps: false });
 // const CharacterModel = sequelize.define<CharacterAttributes>("character",{
