@@ -12,33 +12,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCharacters = void 0;
-//@ts-nocheck
-//import { Request, Response } from 'express';
-// import { pool } from '../database';
-//import { QueryResult } from 'pg';
-const { API_KEY } = process.env;
+exports.getComics = void 0;
 const axios_1 = __importDefault(require("axios"));
-const getCharacters = () => __awaiter(void 0, void 0, void 0, function* () {
+const getComics = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const allCharacters = [];
-        let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=49e9caca6b1b3b836f076299d5a84df4e9ab60a1&format=json`;
-        let characters = yield axios_1.default.get(apidata);
-        characters.data.results.map((char) => {
-            return allCharacters.push({
-                id: char.id,
-                name: char.name,
-                description: char.deck,
-                image: char.image.original_url,
-                // origin: char.origin.name    //? char.origin.name : "Desconocido"
-                // isAvaliable: true,
-                // price: 
+        const comics = [];
+        let listSeries = `https://comicvine.gamespot.com/api/series_list/?api_key=49e9caca6b1b3b836f076299d5a84df4e9ab60a1&format=json`;
+        let dataList = yield axios_1.default.get(listSeries);
+        // console.log(dataList)
+        dataList.data.results.map((e) => {
+            return comics.push({
+                name: e.name,
+                id: e.id,
+                image: e.image.original_url,
+                description: e.deck,
+                release: e.date_added.slice(' '),
+                episodes: e.count_of_episodes
             });
         });
-        return allCharacters;
+        console.log(comics);
+        return comics;
     }
-    catch (e) {
-        console.log(e);
+    catch (error) {
+        console.log(error);
     }
 });
-exports.getCharacters = getCharacters;
+exports.getComics = getComics;
+console.log((0, exports.getComics)());

@@ -10,19 +10,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const characterController_1 = require("../controllers/characterController");
+const episodesController_1 = require("../controllers/episodesController");
 const router = (0, express_1.Router)();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        let allCharacters = yield (0, characterController_1.getCharacters)();
-        // allCharacters?
-        res.status(200).json(allCharacters); //:
-        // res.status(400).send("No nay datos para mostrar")
+        let allcomics = yield (0, episodesController_1.getComics)();
+        allcomics ?
+            res.status(200).send(allcomics) :
+            res.status(400).send("No nay datos para mostrar");
     }
     catch (error) {
-        // return error
-        return res.status(400).send(error);
+        return error;
     }
 }));
-router.post('/');
 exports.default = router;
