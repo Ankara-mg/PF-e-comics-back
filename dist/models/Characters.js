@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const { DataTypes, UUIDV1 } = require('sequelize');
 const sequelize_1 = require("sequelize");
-const sequelize = require('../database/db.ts');
-// ¿Y ahora? D: 
+const sequelize = require('../db.ts');
 // interface CharacterCreateAttributes extends Optional<CharacterAttributes, "description" | "gender" | "image"> {}
 /* export class Character extends Model<CharacterAttributes> implements CharacterAttributes {
     public id!: number
@@ -16,23 +14,24 @@ class CharacterModel extends sequelize_1.Model {
 }
 CharacterModel.init({
     id: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: sequelize_1.DataTypes.INTEGER.UNSIGNED,
         unique: true,
         allowNull: false,
         primaryKey: true,
     },
     name: {
-        type: DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
     description: {
-        type: DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING,
     },
     gender: {
-        type: DataTypes.INTEGER,
+        type: sequelize_1.DataTypes.INTEGER,
     },
     image: {
-        type: DataTypes.STRING,
+        type: sequelize_1.DataTypes.STRING,
     }
 }, { sequelize, timestamps: false });
+module.exports = CharacterModel;
 // const CharacterModel = sequelize.define<CharacterAttributes>("character",{
