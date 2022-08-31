@@ -1,0 +1,12 @@
+# $ npm init -y
+# $ npm i  typescript @types/node ts-node ts-node-dev -D
+# $ npm i express dotenv
+# $ npm i sequelize pg pg-hstore
+# $ tsc --init
+# touch .gitignore
+# $ touch .env
+# $ npm i sequelize-cli -D
+# npx sequelize-cli init
+# $ npm i --save-dev @types/express
+# npm run dev
+ npx sequelize-cli model:generate --name User --attributes name:string
