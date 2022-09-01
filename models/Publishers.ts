@@ -5,7 +5,7 @@ interface PublisherAttributes {
     id: number;
     name: string;
     image: string;
-    city: string;
+    city?: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -13,7 +13,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         id!: number;
         name!: string;
         image!: string;
-        city!: string;
+        city?: string;
 
         static associate(models:any){
             Publishers.hasMany(models.Comics)
@@ -38,7 +38,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         city: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         }
     }, {sequelize, timestamps: false, modelName: 'Publishers'})
     return Publishers;

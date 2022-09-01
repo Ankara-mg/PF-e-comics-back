@@ -11,11 +11,14 @@ export const getPublishers = async (req: Request, res: Response) => {
         publishers.data.results.map((char: any) => {
 
             return allPublishers.push({
-                name: char.name
+                name: char.name,
+                image: char.image.original_url,
+                city: char.location_city
+
             })
 
         })
-        //await db.Publishers.bulkCreate(allPublishers)
+        await db.Publishers.bulkCreate(allPublishers)
         res.send(allPublishers);
     } catch (e) {
         console.log(e);

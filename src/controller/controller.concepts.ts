@@ -10,11 +10,14 @@ export const getConcepts = async (req: Request, res: Response) => {
         let concepts = await axios.get(apidata)
         concepts.data.results.map((char: any) => {
             return allConcepts.push({
-                name: char.name
+            
+                name: char.name,
+                description: char.description
+
             })
 
         })
-        // await db.Concepts.bulkCreate(allConcepts)
+        await db.Concepts.bulkCreate(allConcepts)
         res.send(allConcepts);
     } catch (e) {
         console.log(e);

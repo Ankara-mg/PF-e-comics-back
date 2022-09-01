@@ -27,6 +27,8 @@ export const getComics = async (req: Request, res: Response) => {
     }
 }
 
+
+
 export const postComics = async (req: Request, res: Response) => {
     const { name, image, release, description, episodes} = req.body
 // console.log(req.body)
