@@ -11,7 +11,10 @@ export const getPublishers = async (req: Request, res: Response) => {
         publishers.data.results.map((char: any) => {
 
             return allPublishers.push({
-                name: char.name
+                name: char.name,
+                image: char.image.original_url,
+                city: char.location_city
+
             })
 
         })
