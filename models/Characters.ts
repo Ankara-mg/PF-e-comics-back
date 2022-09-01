@@ -56,7 +56,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
 import { DataTypes, Model, Sequelize } from 'sequelize'
 
 interface CharacterAttributes {
-    
     id: number;
     name: string;
     description?: string;
