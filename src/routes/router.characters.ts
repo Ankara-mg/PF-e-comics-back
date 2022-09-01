@@ -1,8 +1,8 @@
 const { Router } = require('express');
-import {getCharactersDB, getCharacters } from '../controller/controller.characters'
+import {getCharactersDB } from '../controller/controller.characters'
 const router = Router();
 
-router.get('/', getCharactersDB, getCharacters )
+router.get('/', getCharactersDB )
 
 // router.use('/:id', controllerUser.getusers )
 
