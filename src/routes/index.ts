@@ -4,7 +4,6 @@ import episodesRoutes from './episodesRoutes';
 const router = Router();
 
 router.use('/characters', routesCharacter )
-router.use('/comics', episodesRoutes )
-
+router.use('/comics', episodesRoutes)
 
 export default router;
