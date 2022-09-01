@@ -31,3 +31,17 @@ export const getCharacters = async (req: Request, res: Response) => {
 };
 
 
+export const getCharactersDB = async(req: Request, res:Response) =>{
+    const allCharacters = await db.Characters.findAll();
+    const character = allCharacters.map((char: { id: any; name: any; description: any; image: any; }) => {
+        return {
+            id: char.id,
+            name:char.name,
+            description: char.description,
+            image: char.image
+
+        }
+    })
+    console.log("soy esta funcion")
+    res.send(character)
+ }
