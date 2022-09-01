@@ -37,9 +37,10 @@ export const getCharacters = async (req: Request, res: Response) => {
         await db.Characters.bulkCreate(allCharacters)
         //await db.Characters.create({name: "batman", id: 1545})
 
-        // console.log('allCharacters: ', allCharacters)
         res.send(allCharacters);
     } catch (e) {
         console.log(e);
     }
 };
+
+
