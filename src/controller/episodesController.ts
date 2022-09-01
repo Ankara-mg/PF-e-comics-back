@@ -6,7 +6,7 @@ const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 export const getComics = async (req: Request, res: Response) => {
     try {
         const comics: (object)[] = []
-        let listSeries = `https://comicvine.gamespot.com/api/series_list/?api_key=${apiKey}&format=json`
+        let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json`
         let dataList = await axios.get(listSeries)
         // console.log(dataList)
         dataList.data.results.map((e: any) => {
@@ -15,7 +15,7 @@ export const getComics = async (req: Request, res: Response) => {
                 id: e.id,
                 image: e.image.original_url,
                 description: e.deck,
-                release: e.date_added.slice(' '),
+                release: e.date_added.slice(0, 10),
                 episodes: e.count_of_episodes
             })
         })
@@ -26,6 +26,8 @@ export const getComics = async (req: Request, res: Response) => {
         console.log(error)
     }
 }
+
+
 
 export const postComics = async (req: Request, res: Response) => {
     const { name, image, release, description, episodes} = req.body
@@ -55,16 +57,16 @@ export const SearchName = async(req: Request, res: Response) =>{
     const names: [] = []
     console.log(names)
     if(name){
-         const url = `https://comicvine.gamespot.com/api/search/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json&query=${name}&resources=character`     //volume
+         const url = `https://comicvine.gamespot.com/api/search/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json&query=${name}&resources=volume&limit=10`     //volume
     console.log(url)
          let datos = await axios.get(url)
         datos = datos.data.results.map((e: any) => {
             let results = {
                 name: e.name,
-                description: e.deck,
-                image: e.image.original_url,
-                origin: e.origin.name,
-                publisher: e.publisher.name
+                // description: e.deck,
+                // image: e.image.original_url,
+                // origin: e.origin.name,
+                // publisher: e.publisher.name
             }
             return results
         })
