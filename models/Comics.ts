@@ -7,7 +7,7 @@ interface ComicAttributes {
   description?: string;
   release: string;
   episodes: number;
-  createInDb: boolean;
+  // createInDb: boolean;
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
@@ -18,12 +18,13 @@ module.exports = (sequelize:any, DataTypes:any) => {
     description?: string;
     release!: string;
     episodes!: number;
-    createInDb!: boolean;
+    // createInDb!: boolean;
 
     static associate (models:any){
       Comics.belongsToMany(models.Characters, {through: 'character_comic'})
       Comics.belongsToMany(models.Concepts, {through: 'concept_comic'})
-      Comics.belongsTo(models.Publishers)
+      Comics.belongsTo(models.Publishers, {foreignKey: "publisher_Name"});
+      
       
       /* Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
       Comics.hasMany(models.Ratings)
@@ -56,11 +57,11 @@ module.exports = (sequelize:any, DataTypes:any) => {
           type: DataTypes.INTEGER,
           defaultValue: 0
       },
-      createInDb: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      }
+      // createInDb: {
+      //   type: DataTypes.BOOLEAN,
+      //   allowNull: false,
+      //   defaultValue: false,
+      // }
     }, {sequelize, 
       timestamps: true,
       modelName: "Comics"

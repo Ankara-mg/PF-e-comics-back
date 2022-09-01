@@ -2,7 +2,7 @@ import db from "./models";
 import app from "./app";
 // import { Request, Response, NextFunction } from "express";
 // import { getComics } from "./src/controller/episodesController"
-// import { getCharacters} from './src/controller/controller.characters'
+import { getCharacters} from './src/controller/controller.characters'
 
 
 const port = process.env.PORT || 3000;

@@ -29,44 +29,84 @@ export const getComics = async (req: Request, res: Response) => {
 
 
 
+// export const postComics = async (req: Request, res: Response) => {
+// const { name, image, release, description, episodes, characters, publishers, conceps} = req.body
+// // console.log(req.body)
+// // console.log(characters[0].name, "soyyyyyyyyyyyyyyyyyy")
+// // console.log(findNameInDbChar, "holaaaaaaaaaaaaaaaaaaaa")
+// try{
+//     const newComic = await db.Comics.create({                                   //create   findOrCreate
+//         name,
+//         image,
+//         release,
+//         description, 
+//         episodes,
+//         // characters,
+//         // publishers,
+//             // conceps,
+//             // createInDb: true
+//         })
+//         // const findNameInDbPublisher = await db.Characters.findAll({
+//             //     where: {name : db.Characters}
+//             // })
+//             // const findNameInDbConceps = await db.Characters.findAll({
+//                 //     where: {name : db.Characters}
+//                 // })
+//                 const findNameInDbChar = await db.Characters.findAll({
+//                     where: {name : characters[0].name}
+//                 })
+//                 newComic.addComics(findNameInDbChar)
+        
+//         res.status(200).send('El comic fue creado exitosamente😊')
+//     }catch(error){
+//         // next()
+//         console.log(error)
+//     }
+// }
 export const postComics = async (req: Request, res: Response) => {
-    const { name, image, release, description, episodes} = req.body
-// console.log(req.body)
-    try{
-        const newComic = await db.Comics.create({                                   //create   findOrCreate
-            name,
-            image,
+    const { name, image, release, description, episodes, characters, publishers, conceps} = req.body
+    try {
+        const exists= await db.Comics.findOne({ where: { name: name } });
+        if (exists) return res.json({ Info: "Comic already exists" });
+
+        const newComic = await db.Comics.findOrCreate({
+        where:{
+            name:name.charAt(0).toUpperCase() + name.slice(1),
+            description,
             release,
-            description, 
+            image,
             episodes,
-            createInDb: true
-        })
-        // const characterDb = await db.Characters.findAll({
-        //     where: {name : db.Characters}
-        // })
-        // newComic.addCharacters(characterDb)
-        res.status(200).send('El comic fue creado exitosamente😊')
-    }catch(error){
-        // next()
-        console.log(error)
-    }
+       }
+       }) 
+        let episodesrel =  await db.Characters.findAll({where : {name : characters},})
+
+                newComic[0].addCharacters(episodesrel)
+
+                res.json({ Info: "Comic created right!!"});
+
+        let publisherrel =  await db.Publishers.findAll({where : {name : publishers},})
+
+                newComic[0].addPublishers(publisherrel)
+
+                res.json({ Info: "Comic created right!!"});
+        } catch (error) {
+            console.log(error)
+        }
 }
 
 export const SearchName = async(req: Request, res: Response) =>{
     const {name} = req.query
     const names: [] = []
-    console.log(names)
     if(name){
          const url = `https://comicvine.gamespot.com/api/search/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json&query=${name}&resources=volume&limit=10`     //volume
-    console.log(url)
          let datos = await axios.get(url)
         datos = datos.data.results.map((e: any) => {
             let results = {
                 name: e.name,
-                // description: e.deck,
-                // image: e.image.original_url,
-                // origin: e.origin.name,
-                // publisher: e.publisher.name
+                description: e.deck,
+                image: e.image.original_url,
+                origin: e.origin.name,
+                publisher: e.publisher.name
             }
             return results
         })
