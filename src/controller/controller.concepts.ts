@@ -14,7 +14,7 @@ export const getConcepts = async (req: Request, res: Response) => {
             })
 
         })
-        // await db.Concepts.bulkCreate(allConcepts)
+        await db.Concepts.bulkCreate(allConcepts)
         res.send(allConcepts);
     } catch (e) {
         console.log(e);

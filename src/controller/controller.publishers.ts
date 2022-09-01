@@ -15,7 +15,7 @@ export const getPublishers = async (req: Request, res: Response) => {
             })
 
         })
-        //await db.Publishers.bulkCreate(allPublishers)
+        await db.Publishers.bulkCreate(allPublishers)
         res.send(allPublishers);
     } catch (e) {
         console.log(e);
