@@ -1,18 +1,5 @@
 //@ts-nocheck
 
-/* export  const controllerUser = {
-    getusers: async(req:Request, res:Response,) =>{
-        const obj = {
-            name: 'lucas7',
-            email: 'lucas7@gmail.com',
-            password: 12345
-        }
-        const newUser = await  db.User.create(obj)
-        return res.json(newUser)
-    },
-    
-} */
-
 import { Request, Response, NextFunction } from "express";
 import db from "../../models";
 import axios from 'axios';
@@ -24,6 +11,7 @@ export const getCharacters = async (req: Request, res: Response) => {
         let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json`
         let characters = await axios.get(apidata)
         characters.data.results.map((char: any) => {
+            // console.log('DESC LENGTH', char.deck.length)
 
             return allCharacters.push({
                 id: char.id,
@@ -36,23 +24,10 @@ export const getCharacters = async (req: Request, res: Response) => {
         })
         
         await db.Characters.bulkCreate(allCharacters)
-
-/*        db.Characters.findOrCreate(allCharacters) */
-/* 
-        allCharacters.map(c => {
-            db.Characters.findOrCreate({
-                where:{
-                    id: c.id,
-                    name: c.name,
-                    description: c.description,
-                    image: c.image,
-                    gender: c.gender,
-                }
-            })
-        }) */
-
         res.send(allCharacters);
     } catch (e) {
         console.log(e);
     }
 };
+
+
