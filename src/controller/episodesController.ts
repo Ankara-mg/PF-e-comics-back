@@ -3,66 +3,54 @@ import { Request, Response } from "express";
 import db from "../../models";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 
-export const getComics = async (req: Request, res: Response) => {
+export const getComics = async () => {
     try {
-        const comics: (object)[] = []
-        let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json`
-        let dataList = await axios.get(listSeries)
-        // console.log(dataList)
-        dataList.data.results.map((e: any) => {
-            return comics.push({
-                name: e.name,
-                id: e.id,
-                image: e.image.original_url,
-                description: e.deck,
-                release: e.date_added.slice(0, 10),
-                episodes: e.count_of_episodes
+        const com = await db.Comics.findAll()
+        if(!com.length){
+            const comics: (object)[] = []
+            let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json`
+            let dataList = await axios.get(listSeries)
+    
+            dataList.data.results.map((e: any) => {
+                return comics.push({
+                    name: e.name,
+                    id: e.id,
+                    image: e.image.original_url,
+                    description: e.deck,
+                    release: e.date_added.slice(0, 10),
+                    episodes: e.count_of_episodes
+                })
             })
-        })
-        await db.Comics.bulkCreate(comics)
-        res.send(comics)
+            await db.Comics.bulkCreate(comics)
+        }
     //    return comics
     } catch (error) {
         console.log(error)
     }
 }
 
-
-
-// export const postComics = async (req: Request, res: Response) => {
-// const { name, image, release, description, episodes, characters, publishers, conceps} = req.body
-// // console.log(req.body)
-// // console.log(characters[0].name, "soyyyyyyyyyyyyyyyyyy")
-// // console.log(findNameInDbChar, "holaaaaaaaaaaaaaaaaaaaa")
-// try{
-//     const newComic = await db.Comics.create({                                   //create   findOrCreate
-//         name,
-//         image,
-//         release,
-//         description, 
-//         episodes,
-//         // characters,
-//         // publishers,
-//             // conceps,
-//             // createInDb: true
-//         })
-//         // const findNameInDbPublisher = await db.Characters.findAll({
-//             //     where: {name : db.Characters}
-//             // })
-//             // const findNameInDbConceps = await db.Characters.findAll({
-//                 //     where: {name : db.Characters}
-//                 // })
-//                 const findNameInDbChar = await db.Characters.findAll({
-//                     where: {name : characters[0].name}
-//                 })
-//                 newComic.addComics(findNameInDbChar)
+export const getComicsDB = async(req: Request, res: Response) =>{
+    try {
+        const allcomicsDB = await db.Comics.findAll();
+       
+        const comics = allcomicsDB.map((char: { id: any; name: any; description: any; image: any; }) => {
+            return {
+                id: char.id,
+                name:char.name,
+                description: char.description,
+                image: char.image
+    
+            }
+        })
+      //  return publishers
+      res.send(comics)
         
-//         res.status(200).send('El comic fue creado exitosamente😊')
-//     }catch(error){
-//         // next()
-//         console.log(error)
-//     }
-// }
+    } catch (error) {
+        console.log(error)
+    }
+   
+ }
+
 export const postComics = async (req: Request, res: Response) => {
     const { name, image, release, description, episodes, characters, publishers, conceps} = req.body
     try {
@@ -79,16 +67,13 @@ export const postComics = async (req: Request, res: Response) => {
        }
        }) 
         let episodesrel =  await db.Characters.findAll({where : {name : characters},})
-
                 newComic[0].addCharacters(episodesrel)
-
                 res.json({ Info: "Comic created right!!"});
 
         let publisherrel =  await db.Publishers.findAll({where : {name : publishers},})
-
                 newComic[0].addPublishers(publisherrel)
-
                 res.json({ Info: "Comic created right!!"});
+                
         } catch (error) {
             console.log(error)
         }
