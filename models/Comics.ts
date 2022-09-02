@@ -8,6 +8,7 @@ interface ComicAttributes {
   release: string;
   episodes: number;
   createInDb: boolean;
+  api_detail_url: string;
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
@@ -19,6 +20,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
     release!: string;
     episodes!: number;
     createInDb!: boolean;
+    api_detail_url!: string
 
     static associate (models:any){
       Comics.belongsToMany(models.Characters, {through: 'character_comic'})
@@ -55,6 +57,10 @@ module.exports = (sequelize:any, DataTypes:any) => {
       episodes: {
           type: DataTypes.INTEGER,
           defaultValue: 0
+      },
+      api_url_detail: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       createInDb: {
         type: DataTypes.BOOLEAN,
