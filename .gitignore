@@ -4,4 +4,6 @@ dist
 config
 tsconfig.json
 package-lock.json
-
+seeders
+migrations
+.gitignore
