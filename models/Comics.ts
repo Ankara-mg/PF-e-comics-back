@@ -7,8 +7,9 @@ interface ComicAttributes {
   description?: string;
   release: string;
   episodes: number;
-  createInDb: boolean;
+  //createInDb: boolean;
   api_detail_url: string;
+
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
@@ -19,17 +20,17 @@ module.exports = (sequelize:any, DataTypes:any) => {
     description?: string;
     release!: string;
     episodes!: number;
-    createInDb!: boolean;
+   // createInDb!: boolean;
     api_detail_url!: string
+
 
     static associate (models:any){
       Comics.belongsToMany(models.Characters, {through: 'character_comic'})
       Comics.belongsToMany(models.Concepts, {through: 'concept_comic'})
-      Comics.belongsTo(models.Publishers)
-      
-      /* Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
+      Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
+      Comics.belongsToMany(models.Users, {through: 'favorites_list'})
+      Comics.belongsTo(models.Publishers, { foreignKey: "publisherId"})
       Comics.hasMany(models.Ratings)
-      Comics.belongsToMany(models.Users, {through: 'favorites_list'}) */
     }
   }
   Comics.init({
@@ -58,15 +59,18 @@ module.exports = (sequelize:any, DataTypes:any) => {
           type: DataTypes.INTEGER,
           defaultValue: 0
       },
+
       api_url_detail: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      createInDb: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-      }
+     
+      // createInDb: {
+      //   type: DataTypes.BOOLEAN,
+      //   allowNull: false,
+      //   defaultValue: false,
+      // }
+
     }, {sequelize, 
       timestamps: true,
       modelName: "Comics"
