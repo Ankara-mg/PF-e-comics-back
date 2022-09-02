@@ -16,7 +16,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         city?: string;
 
         static associate(models:any){
-            Publishers.hasMany(models.Comics)
+            Publishers.hasMany(models.Comics, { as: "Comics" })
         }
     }
     
@@ -38,7 +38,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         city: {
             type: DataTypes.STRING,
-            allowNull: true,
+            //allowNull: false,
         }
     }, {sequelize, timestamps: false, modelName: 'Publishers'})
     return Publishers;

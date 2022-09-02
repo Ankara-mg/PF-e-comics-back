@@ -19,7 +19,6 @@ db.sequelize.sync({ force: false }).then(async()=>{
         // getComics()
         // getConcepts()
         // getCharacters()
-        
         console.log(`App listening on port ${port}`)
     })
 })
