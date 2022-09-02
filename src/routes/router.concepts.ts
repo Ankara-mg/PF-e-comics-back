@@ -1,9 +1,9 @@
 const { Router } = require('express');
-import { getConcepts } from "../controller/controller.concepts";
+import { getConceptssDB } from "../controller/controller.concepts";
 
 const router = Router();
 
-router.get('/', getConcepts )
+router.get('/', getConceptssDB )
 
 
 export default router;
