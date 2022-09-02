@@ -3,28 +3,30 @@
 import { Request, Response, NextFunction } from "express";
 import db from "../../models";
 import axios from 'axios';
+import { findAll } from "../../dist/models/Characters";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 
-export const getCharacters = async (req: Request, res: Response) => {
+export const getCharacters = async () => {
     try {
-        const allCharacters: (object)[] = []
-        let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json`
-        let characters = await axios.get(apidata)
-        characters.data.results.map((char: any) => {
-            // console.log('DESC LENGTH', char.deck.length)
-
-            return allCharacters.push({
-                id: char.id,
-                name: char.name,
-                description: char.deck,
-                image: char.image.original_url,
-                gender: char.gender,
+        const char = await db.Characters.findAll()
+        if(!char.length){
+            const allCharacters: (object)[] = []
+            let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json`
+            let characters = await axios.get(apidata)
+            characters.data.results.map((char: any) => {
+                // console.log('DESC LENGTH', char.deck.length)
+    
+                return allCharacters.push({
+                    id: char.id,
+                    name: char.name,
+                    description: char.deck,
+                    image: char.image.original_url,
+                    gender: char.gender,
+                })
+                
             })
-            
-        })
-        
-        await db.Characters.bulkCreate(allCharacters)
-        res.send(allCharacters);
+            await db.Characters.bulkCreate(allCharacters)
+        }
     } catch (e) {
         console.log(e);
     }
@@ -42,6 +44,7 @@ export const getCharactersDB = async(req: Request, res:Response) =>{
 
         }
     })
-    console.log("soy esta funcion")
+    
     res.send(character)
+    
  }

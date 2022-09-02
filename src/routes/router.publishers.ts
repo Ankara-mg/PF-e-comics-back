@@ -1,11 +1,28 @@
 const { Router } = require('express');
-import { getPublishers } from "../controller/controller.publishers";
+import { getpublishersDB } from "../controller/controller.publishers";
 
 
 const router = Router();
 
-router.get('/', getPublishers )
+//router.get('/', getPublishers )
+
+router.get('/', getpublishersDB )
 
 
-export default router;
 
+
+
+// router.get('/', async(req: Request, res: Response) =>{
+    //     try {
+        //     const data = await getPublishers()
+        //         res.send(data)
+        //     } catch (error) {
+            
+            //     }
+            
+            // } )
+            
+            
+            
+            
+ export default router;
