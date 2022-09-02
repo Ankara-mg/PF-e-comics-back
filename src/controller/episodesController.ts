@@ -2,6 +2,7 @@ import axios from "axios"
 import { Request, Response } from "express";
 import db from "../../models";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
+import {Op} from 'sequelize'
 
 export const getComics = async () => {
     try {
@@ -32,7 +33,6 @@ export const getComics = async () => {
 export const getComicsDB = async(req: Request, res: Response) =>{
     try {
         const allcomicsDB = await db.Comics.findAll();
-       
         const comics = allcomicsDB.map((char: { id: any; name: any; description: any; image: any; }) => {
             return {
                 id: char.id,
@@ -43,16 +43,15 @@ export const getComicsDB = async(req: Request, res: Response) =>{
             }
         })
       //  return publishers
-      res.send(comics)
+        res.send(comics)
         
     } catch (error) {
         console.log(error)
     }
-   
- }
+}
 
 export const postComics = async (req: Request, res: Response) => {
-    const { name, image, release, description, episodes, characters, publishers, conceps} = req.body
+    const { name, image, release, description, episodes, characters, publisher_Name, conceps} = req.body
     try {
         const exists= await db.Comics.findOne({ where: { name: name } });
         if (exists) return res.json({ Info: "Comic already exists" });
@@ -64,43 +63,71 @@ export const postComics = async (req: Request, res: Response) => {
             release,
             image,
             episodes,
-       }
-       }) 
-        let episodesrel =  await db.Characters.findAll({where : {name : characters},})
+            // publishersName
+        }
+    }) 
+    let episodesrel =  await db.Characters.findAll({where : {name : characters},})
+    let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
                 newComic[0].addCharacters(episodesrel)
+                await newComic[0].setPublisher(publisherrel)
+                // res.json({ Info: "Comic created right!!"});
                 res.json({ Info: "Comic created right!!"});
 
-        let publisherrel =  await db.Publishers.findAll({where : {name : publishers},})
-                newComic[0].addPublishers(publisherrel)
-                res.json({ Info: "Comic created right!!"});
-                
         } catch (error) {
             console.log(error)
         }
 }
 
-export const SearchName = async(req: Request, res: Response) =>{
-    const {name} = req.query
-    const names: [] = []
+export const SearchName = async(name: any) =>{
+    // const {name} = req.query
+    const names: any = []
     if(name){
-         const url = `https://comicvine.gamespot.com/api/search/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json&query=${name}&resources=volume&limit=10`     //volume
-         let datos = await axios.get(url)
+         const url = `https://comicvine.gamespot.com/api/search/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json&query=${name}&resources=volume`     //volume
+        let datos = await axios.get(url)
         datos = datos.data.results.map((e: any) => {
-            let results = {
+            names.push({
                 name: e.name,
                 description: e.deck,
                 image: e.image.original_url,
-                origin: e.origin.name,
+                gender: e.gender,
                 publisher: e.publisher.name
-            }
-            return results
+                })
+                return names
         })
-        res.status(200).send(names)
+        return names
     }
-   else{
-    res.status(404).send("No existe name ")
-   }
 }
+
+
+export const SearchNameDB = async(name: any) =>{
+    try{
+        return await db.Comics.findAll({      
+            where: {
+                name:{
+                    [Op.iLike]:`%${name}%`
+                }
+            },
+            include: (db.Characters, db.Concepts, db.Publishers)
+        })
+        }catch (error) {
+            console.log('Error en info Db');
+        }
+}
+
+export const getAllInfo = async (req: Request, res: Response) => {
+    const {name} = req.query
+    try {
+        const infoApi = await SearchName(name);
+        const infoDb = await SearchNameDB(name);
+            console.log(SearchNameDB, "hola soyyyyy url")
+        const infoTotal = infoDb.concat(infoApi)
+            res.send( infoTotal)
+    } catch (error) {
+        console.log('Error en info total');
+        }
+    };
+
+
 
 // "tsc": "tsc",
 //     "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",

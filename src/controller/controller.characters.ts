@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import db from "../../models";
 import axios from 'axios';
 import { findAll } from "../../dist/models/Characters";
@@ -23,7 +23,6 @@ export const getCharacters = async () => {
                     image: char.image.original_url,
                     gender: char.gender,
                 })
-                
             })
             await db.Characters.bulkCreate(allCharacters)
         }
