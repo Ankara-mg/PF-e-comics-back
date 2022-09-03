@@ -12,20 +12,17 @@ export const getConcepts = async () => {
             let concepts = await axios.get(apidata)
             concepts.data.results.map((char: any) => {
                 return allConcepts.push({
-                
                     name: char.name,
-                  
+
                 })
-    
             })
             await db.Concepts.bulkCreate(allConcepts)
         }
-
     } catch (e) {
         console.log(e);
     }
 };
-
+//------------------------------------------ http://localhost:3000/concepts --------------------------
 
 export const getConceptssDB = async(req: Request, res: Response) =>{
     try {
@@ -34,7 +31,6 @@ export const getConceptssDB = async(req: Request, res: Response) =>{
             return {
                 id: char.id,
                 name:char.name,
-
             }
         })
       res.send(concepts)

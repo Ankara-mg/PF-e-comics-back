@@ -2,7 +2,7 @@ import { DataTypes, UUIDV1, Model, Sequelize } from 'sequelize'
 import sequelize from '../dist/database/db';
 
 interface PublisherAttributes {
-    id: number;
+    id: string;
     name: string;
     image: string;
     city?: string;
@@ -10,20 +10,20 @@ interface PublisherAttributes {
 
 module.exports = (sequelize: any, DataTypes: any) => {
     class Publishers extends Model implements PublisherAttributes {
-        id!: number;
+        id!: string;
         name!: string;
         image!: string;
         city?: string;
 
-        static associate(models:any){
-            Publishers.hasMany(models.Comics, { as: "Comics" })
-        }
+        // static associate(models:any){
+        //     Publishers.hasMany(models.Comics, { as: "Comics" })
+        // }
     }
     
     Publishers.init({
         id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
+            type: DataTypes.STRING,
+            // autoIncrement: true,
             unique: true,
             allowNull: false,
             primaryKey: true

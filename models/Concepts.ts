@@ -15,6 +15,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
         static associate (models:any){
             Concepts.belongsToMany(models.Comics, {through: 'concept_comics'})
+
+            // Concepts.belongsToMany(models.Comics, {through: 'concept_comic', foreignKey: {name: "conceptId"}})
         }
     }
     Concepts.init({
