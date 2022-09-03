@@ -1,12 +1,15 @@
 //@ts-nocheck
 
-
 import { Request, Response, NextFunction } from "express";
 import axios from 'axios';
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 import db from "../../models";
+import { characters } from "../../seeders/characters";
+
 
 //------------------------- http://localhost:3000/comics/id ----------------------------------
+
 
 export const getDetails = async (req: Request, res: Response) => {
 
@@ -15,6 +18,7 @@ export const getDetails = async (req: Request, res: Response) => {
     try {
         let api
         if (id > 600){
+
             api = await axios.get(`https://comicvine.gamespot.com/api/volume/4050-${id}/?api_key=${apiKey}&format=json`)
             const apiData = api.data.results 
             if(apiData){
@@ -31,40 +35,41 @@ export const getDetails = async (req: Request, res: Response) => {
                             id: e.id,
                             issue_Number: e.issue_number,
                             // image: e.api_detail_url
-                        }
-                    }),
-            }
-            console.log(api)
-            res.send(comicDetail)
+                          }
+                        })
+                    }
+                res.send(comicDetail)
 
         } else throw "No se encontro ese comic"
-    }
-    else if (id < 600){
-            api = await db.Comics.findAll({
-                include:[
-                    {model: db.Characters},
-                    {model: db.Concepts},
-                    {model: db.Publishers
-                }],
-                where: {
-                    id: id
-                }
-            });
-            console.log(api)
-            let auxiliar = api.map((e: { name: any; image: any; publishers: any; description: any; release: any; Publisher: any; }) => {
+
+    } else if (id<600){
+          api = await db.Comics.findAll({
+            include:[{
+                model: db.Characters},
+                {model: db.Concepts},
+                ],
+
+            where: {
+                id: id
+            }
+        })
+        console.log(api)
+        let auxiliar = api.map(e => {
             return {
-                id: e.id,
+
                 name: e.name,
                 image: e.image,
                 description: e.description,
                 release: e.release, 
-                Publisher: e.publisher_Name,
+                publisher: e.publisher,
+                characters: e.Characters,
                 episodes: e.episodes,
-                characters: e.Characters, 
+
                 concepts: e.Concepts
             }
         })
         res.send(auxiliar) 
+
         }
     } catch (e) {
         console.log(e);

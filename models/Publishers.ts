@@ -15,9 +15,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         image!: string;
         city?: string;
 
-        static associate(models:any){
-            Publishers.hasMany(models.Comics, { as: "Comics" })
-        }
+        // static associate(models:any){
+        //     Publishers.hasMany(models.Comics, { as: "Comics" })
+        // }
     }
     
     Publishers.init({

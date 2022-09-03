@@ -15,11 +15,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         email!: string;
         address?: string;
 
-        // static associate (models:any){
-        //     Users.hasMany(models.Ratings)
-        //     Users.hasMany(models.Purchases)
-        //     Users.belongsToMany(models.Comics, {through: 'favorites_list'})
-        // }
+        static associate (models:any){
+            Users.hasMany(models.Ratings)
+            //Users.hasMany(models.Purchases)
+            Users.belongsToMany(models.Comics, {through: 'favorites_list'})
+        }
     }
     Users.init({
         id: {

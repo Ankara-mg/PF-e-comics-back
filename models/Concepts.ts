@@ -15,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
         static associate (models:any){
             Concepts.belongsToMany(models.Comics, {through: 'concept_comics'})
+
             // Concepts.belongsToMany(models.Comics, {through: 'concept_comic', foreignKey: {name: "conceptId"}})
         }
     }
@@ -32,7 +33,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         description: {
             type: DataTypes.TEXT,
-            allowNull: false,
+            allowNull: true,
         }
     }, {sequelize, timestamps: false, modelName: 'Concepts'})
     return Concepts

@@ -19,12 +19,15 @@ module.exports = (sequelize:any, DataTypes:any) => {
     release!: string;
     episodes!: number;
     createInDb!: boolean;
+    //api_detail_url!: string
+
     static associate (models:any){
       Comics.belongsToMany(models.Characters, {through: 'character_comic'})
       Comics.belongsToMany(models.Concepts, {through: 'concept_comics'})
       // Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
+
       Comics.belongsToMany(models.Users, {through: 'favorites_list'})
-      Comics.belongsTo(models.Publishers, { foreignKey: "publisher_Name"})
+     // Comics.belongsTo(models.Publishers, { foreignKey: "publisher_Name"})
       Comics.hasMany(models.Ratings)
     }
   }
@@ -54,6 +57,15 @@ module.exports = (sequelize:any, DataTypes:any) => {
           type: DataTypes.INTEGER,
           defaultValue: 0
       },
+      publisher:{
+        type: DataTypes.STRING,
+
+      },
+      api_url_detail: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+
       createInDb: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
