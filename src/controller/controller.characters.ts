@@ -31,6 +31,7 @@ export const getCharacters = async () => {
     }
 };
 
+//---------------------------------------------RUTA: http://localhost:3000/characters   ---------------------
 
 export const getCharactersDB = async(req: Request, res:Response) =>{
     const allCharacters = await db.Characters.findAll();

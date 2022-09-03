@@ -19,7 +19,8 @@ export const getComics = async () => {
                     image: e.image.original_url,
                     description: e.deck,
                     release: e.date_added.slice(0, 10),
-                    episodes: e.count_of_episodes
+                    episodes: e.count_of_issues,
+                    createInDb: false
                 })
             })
             await db.Comics.bulkCreate(comics)
@@ -30,16 +31,21 @@ export const getComics = async () => {
     }
 }
 
+//----------------------------- http://localhost:3000/comics -----------------------------------
+
 export const getComicsDB = async(req: Request, res: Response) =>{
     try {
         const allcomicsDB = await db.Comics.findAll();
-        const comics = allcomicsDB.map((char: { id: any; name: any; description: any; image: any; }) => {
+        const comics = allcomicsDB.map((char: {createInDb: any;release: any; episodes: any; id: any; name: any; description: any; image: any; }) => {
             return {
                 id: char.id,
                 name:char.name,
                 description: char.description,
-                image: char.image
-    
+                image: char.image,
+                release: char.release,
+                episodes: char.episodes,
+                createInDb: char.createInDb
+
             }
         })
       //  return publishers
@@ -50,8 +56,10 @@ export const getComicsDB = async(req: Request, res: Response) =>{
     }
 }
 
+//----------------------------- http://localhost:3000/comics -----------------------------------
+
 export const postComics = async (req: Request, res: Response) => {
-    const { name, image, release, description, episodes, characters, publisher_Name, conceps} = req.body
+    const { name, image, release, description, episodes, characters, publisher_Name, concepts} = req.body
     try {
         const exists= await db.Comics.findOne({ where: { name: name } });
         if (exists) return res.json({ Info: "Comic already exists" });
@@ -66,17 +74,21 @@ export const postComics = async (req: Request, res: Response) => {
             // publishersName
         }
     }) 
-    let episodesrel =  await db.Characters.findAll({where : {name : characters},})
-    let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
-                newComic[0].addCharacters(episodesrel)
-                await newComic[0].setPublisher(publisherrel)
-                // res.json({ Info: "Comic created right!!"});
-                res.json({ Info: "Comic created right!!"});
+        let characterDB =  await db.Characters.findAll({where : {name : characters},})
+        let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
+        let conceptsDB =   await db.Concepts.findAll({where : {name : concepts},})
+        
+            newComic[0].addCharacters(characterDB)
+            await newComic[0].setPublisher(publisherrel)
+            await newComic[0].addConcepts(conceptsDB)
 
+                res.json({ Info: "Comic created right!!"});
         } catch (error) {
             console.log(error)
         }
 }
+
+//--------------------------------------- http://localhost:3000/comics/name?name="name" ------------------
 
 export const SearchName = async(name: any) =>{
     // const {name} = req.query
@@ -93,10 +105,10 @@ export const SearchName = async(name: any) =>{
                 publisher: e.publisher.name
                 })
                 return names
-        })
+        }) 
         return names
     }
-}
+} 
 
 
 export const SearchNameDB = async(name: any) =>{
@@ -107,7 +119,11 @@ export const SearchNameDB = async(name: any) =>{
                     [Op.iLike]:`%${name}%`
                 }
             },
-            include: (db.Characters, db.Concepts, db.Publishers)
+            include: [
+                {model: db.Characters},
+                {model: db.Concepts},
+                {model: db.Publishers}
+            ],
         })
         }catch (error) {
             console.log('Error en info Db');
@@ -126,8 +142,3 @@ export const getAllInfo = async (req: Request, res: Response) => {
         console.log('Error en info total');
         }
     };
-
-
-
-// "tsc": "tsc",
-//     "dev": "concurrently \"tsc --watch\" \"nodemon dist/index.js\"",
