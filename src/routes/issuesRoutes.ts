@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import db from "../../models/index";
-import axios from "axios"
+// import { Router } from 'express';
+// import db from "../../models/index";
+// import axios from "axios"
 
 
-const router = Router()
-const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
+// const router = Router()
+// const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 
 
 // router.get('/', async (req, res) => {
@@ -30,22 +30,22 @@ const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 //         console.log(error)
 //     }
 // })
+///////---------------------------------------------------------- corregit
 
+// export const getIssues = async () => {
+//     try {
+//         const com = await db.Comics.findAll()
+//         if(!com.length){
 
-export const getIssues = async () => {
-    try {
-        const com = await db.Comics.findAll()
-        if(!com.length){
-
-            const comics: (object)[] = []
-            let listSeries = await axios.get(`https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=10`)
-            let respuesta = listSeries.data.results
-            let issuesinfo = []
+//             const comics: (object)[] = []
+//             let listSeries = await axios.get(`https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=10`)
+//             let respuesta = listSeries.data.results
+//             let issuesinfo = []
             
-            for (let i = 0; i < respuesta.length; i++){
-                const issues = await axios.get(`${respuesta[i]}?api_key=${apiKey}&format=json)
+//             for (let i = 0; i < respuesta.length; i++){
+//                 const issues = await axios.get(`${respuesta[i]}?api_key=${apiKey}&format=json)
 
-            }
+//  -------------------------------------------------------------------------------------           }
           
                 //console.log(e.api_detail_url)
                 
@@ -59,8 +59,8 @@ export const getIssues = async () => {
                 //     api_url_detail: e.api_detail_url
                 // })
             
-            await db.Comics.bulkCreate(comics)
-        }
+          //  await db.Comics.bulkCreate(comics)
+        //}
 // const api = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=40")
 //     let respuesta = api.data.results
 //         let pokemonInfo = [];
@@ -115,4 +115,4 @@ export const getIssues = async () => {
 
 
 //     // await db.Issues.bulkCreate(result)
-export default router;
+//export default router;

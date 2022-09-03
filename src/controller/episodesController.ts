@@ -12,12 +12,11 @@ export const getComics = async () => {
         const com = await db.Comics.findAll()
         if(!com.length){
             const comics: (object)[] = []
-            let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=10`
+            let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=100`
             let dataList = await axios.get(listSeries)
     
             dataList.data.results.map(async(e: any) => {
-                //console.log(e.api_detail_url)
-                const issues = await axios.get(e.api_detail_url)
+                //const issues = await axios.get(e.api_detail_url)
                 
                 return comics.push({
                     name: e.name,
@@ -31,7 +30,6 @@ export const getComics = async () => {
             })
             await db.Comics.bulkCreate(comics)
         }
-    //    return comics
     } catch (error) {
         console.log(error)
     }
@@ -42,20 +40,22 @@ export const getComics = async () => {
 export const getComicsDB = async(req: Request, res: Response) =>{
     try {
         const allcomicsDB = await db.Comics.findAll();
-
-       
-        const comics = allcomicsDB.map((char: { id: any; name: any; description: any; image: any; api_url_detail: string}) => {
+        const comics = allcomicsDB.map((char: {
+            episodes: any;
+            release: any; id: any; name: any; description: any; image: any; api_url_detail: string
+}) => {
 
             return {
                 id: char.id,
                 name:char.name,
                 description: char.description,
                 image: char.image,
-                api_url_detail: char.api_url_detail
+                api_url_detail: char.api_url_detail,
+                release: char.release,
+                episodes: char.episodes
     
             }
         })
-      //  return publishers
         res.send(comics)
         
     } catch (error) {
@@ -63,9 +63,36 @@ export const getComicsDB = async(req: Request, res: Response) =>{
     }
 
 }
+//-----------------------------------crear comic---------------------------------------------------------------
 
+// export const postComics = async (req: Request, res: Response) => {
+//     const { name, image, release, description, episodes, characters, publisher_Name, conceps} = req.body
+//     try {
+//         const exists= await db.Comics.findOne({ where: { name: name } });
+//         if (exists) return res.json({ Info: "Comic already exists" });
+
+//         const newComic = await db.Comics.findOrCreate({
+//         where:{
+//             name:name.charAt(0).toUpperCase() + name.slice(1),
+//             description,
+//             release,
+//             image,
+//             episodes,
+//             // publishersName
+//         }
+//     }) 
+//     // let episodesrel =  await db.Characters.findAll({where : {name : characters},})
+//     // let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
+//     //             newComic[0].addCharacters(episodesrel)
+//     //             await newComic[0].setPublisher(publisherrel)
+//     //             res.json({ Info: "Comic created right!!"});
+
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
 export const postComics = async (req: Request, res: Response) => {
-    const { name, image, release, description, episodes, characters, publisher_Name, conceps} = req.body
+    const { name, image, release, description, episodes, characters, publisher_Name, concepts} = req.body
     try {
         const exists= await db.Comics.findOne({ where: { name: name } });
         if (exists) return res.json({ Info: "Comic already exists" });
@@ -80,23 +107,27 @@ export const postComics = async (req: Request, res: Response) => {
             // publishersName
         }
     }) 
-    let episodesrel =  await db.Characters.findAll({where : {name : characters},})
-    let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
-                newComic[0].addCharacters(episodesrel)
-                await newComic[0].setPublisher(publisherrel)
-                // res.json({ Info: "Comic created right!!"});
-                res.json({ Info: "Comic created right!!"});
+    let characterDB =  await db.Characters.findAll({where : {name : characters},})
+    newComic[0].addCharacters(characterDB)
 
+    let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
+    await newComic[0].setPublisher(publisherrel)
+
+    let conceptsDB =   await db.Concepts.findAll({where : {name : concepts},})
+            await newComic[0].addConcepts(conceptsDB)
+    
+                res.json({ Info: "Comic created right!!"});
         } catch (error) {
             console.log(error)
         }
 }
+//-----------------------------------------buesqueda por nombre --------------------------------------------
 
 export const SearchName = async(name: any) =>{
     // const {name} = req.query
     const names: any = []
     if(name){
-         const url = `https://comicvine.gamespot.com/api/search/?api_key=d1d5b2c8d71b25f222e620d4541b6ac672a05156&format=json&query=${name}&resources=volume`     //volume
+         const url = `https://comicvine.gamespot.com/api/search/?api_key=${apiKey}&format=json&query=${name}&resources=volume`     //volume
         let datos = await axios.get(url)
 
         datos = datos.data.results.map((e: any) => {
@@ -113,7 +144,6 @@ export const SearchName = async(name: any) =>{
     }
 }
 
-
 export const SearchNameDB = async(name: any) =>{
     try{
         return await db.Comics.findAll({      
@@ -122,7 +152,11 @@ export const SearchNameDB = async(name: any) =>{
                     [Op.iLike]:`%${name}%`
                 }
             },
-            include: (db.Characters, db.Concepts, db.Publishers)
+            include:[{
+                model: db.Characters},
+                {model: db.Concepts},
+                {model: db.Publishers
+            }],
         })
         }catch (error) {
             console.log('Error en info Db');
