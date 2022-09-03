@@ -3,7 +3,8 @@ import db from "../../models";
 import axios from 'axios';
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 
-//export const getPublishers = async (req: Request, res: Response) => {
+
+
     export const getPublishers = async () => { 
     try {
     const pub = await db.Publishers.findAll()
@@ -28,6 +29,8 @@ const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
         console.log(e);
     }
 }; 
+
+//----------------------- http://localhost:3000/publishers -----------------------------
 
 export const getpublishersDB = async(req: Request, res: Response) =>{
     try {

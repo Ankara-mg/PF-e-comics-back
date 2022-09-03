@@ -1,10 +1,6 @@
 import db from "./models";
 import app from "./app";
-// import { Request, Response, NextFunction } from "express";
-// import { getComics } from "./src/controller/episodesController"
-// import { getCharacters} from './src/controller/controller.characters'
 
-import { Request, Response, NextFunction } from "express";
 import {getPublishers} from './src/controller/controller.publishers'
 import { getComics } from "./src/controller/episodesController";
 import { getConcepts } from "./src/controller/controller.concepts";

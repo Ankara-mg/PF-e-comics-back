@@ -4,7 +4,6 @@ import {getComicsDB, postComics, getAllInfo} from '../controller/episodesControl
 
 const router = Router()
 
-//router.get('/', getComics)
 router.get('/', getComicsDB)
 router.get('/name', getAllInfo)
 router.get('/:id', async (req, res) => {getDetails(req, res)})
