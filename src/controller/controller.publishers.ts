@@ -14,6 +14,7 @@ const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
         publishers.data.results.map((char: any) => {
 
             return allPublishers.push({
+                id: char.name,
                 name: char.name,
                 image: char.image.original_url,
                 city: char.location_city
@@ -33,7 +34,8 @@ export const getpublishersDB = async(req: Request, res: Response) =>{
         const allPublishers = await db.Publishers.findAll();
         const publishers = allPublishers.map((char: { id: any; name: any; description: any; image: any; }) => {
             return {
-                id: char.id,
+
+                id: char.name,
                 name:char.name,
                 description: char.description,
                 image: char.image
