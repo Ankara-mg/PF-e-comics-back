@@ -23,7 +23,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
     static associate (models:any){
       Comics.belongsToMany(models.Characters, {through: 'character_comic'})
       Comics.belongsToMany(models.Concepts, {through: 'concept_comic'})
-      Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
+      //Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
       Comics.belongsToMany(models.Users, {through: 'favorites_list'})
       Comics.belongsTo(models.Publishers, { foreignKey: "publisherId"})
       Comics.hasMany(models.Ratings)
