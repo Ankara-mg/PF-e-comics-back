@@ -11,7 +11,7 @@ export const getCharacters = async () => {
         const char = await db.Characters.findAll()
         if(!char.length){
             const allCharacters: (object)[] = []
-            let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json`
+            let apidata = `https://comicvine.gamespot.com/api/characters/?api_key=${apiKey}&format=json&limit=100`
             let characters = await axios.get(apidata)
             characters.data.results.map((char: any) => {
                 // console.log('DESC LENGTH', char.deck.length)
@@ -31,6 +31,7 @@ export const getCharacters = async () => {
     }
 };
 
+//---------------------------------------------RUTA: http://localhost:3000/characters   ---------------------
 
 export const getCharactersDB = async(req: Request, res:Response) =>{
     const allCharacters = await db.Characters.findAll();

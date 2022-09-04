@@ -4,6 +4,5 @@ const router = Router();
 
 router.get('/', getCharactersDB )
 
-// router.use('/:id', controllerUser.getusers )
 
 export default router;
