@@ -9,4 +9,8 @@ router.get('/name', getAllInfo)
 router.get('/:id', async (req, res) => {getDetails(req, res)})
 router.post('/', postComics)
 
+// router.get('/sign-up', loggin)
+
+
+
 export default router;

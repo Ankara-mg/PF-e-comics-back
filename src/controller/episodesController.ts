@@ -156,3 +156,12 @@ export const getAllInfo = async (req: Request, res: Response) => {
         }
 }
 
+export const loggin = async (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
+    res.oidc.login({
+        authorizationParams: {
+            screen_hint: 'signup',
+            },
+        });
+    };
+
+

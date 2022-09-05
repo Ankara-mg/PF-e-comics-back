@@ -6,6 +6,7 @@ interface UserAttributes {
     username: string;
     email: string;
     address?: string;
+    password:string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -14,6 +15,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username!: string;
         email!: string;
         address?: string;
+        password!: string;
 
         static associate (models:any){
             Users.hasMany(models.Ratings)
@@ -38,6 +40,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
             allowNull: false,
         },
         address: {
+            type: DataTypes.STRING,
+        },
+        password: {
             type: DataTypes.STRING,
         }
     },{sequelize, timestamps: true, modelName: 'Users'})

@@ -2,6 +2,11 @@ import express from "express";
 import routes from './src/routes/index'
 //import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+// import { dotenv } from "dotenv";
+
+
+//----------
+
 //import morgan from 'morgan';
 
 const app = express();
@@ -9,6 +14,10 @@ const app = express();
 //cors:
 
 //midlewares:
+
+//----------
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
