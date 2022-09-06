@@ -2,19 +2,21 @@ import { DataTypes, Model, Sequelize } from 'sequelize'
 
 interface IssuesAttributes {
     id: number;
-    characters: string[];
-    concepts: string[];
-    count_of_issues: number;
-    issues: any[]
+    issue_number: number;
+    volume_id: number;
+    name: string
+    price: number;
+    image: string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
     class Issues extends Model implements IssuesAttributes {
         id!: number;
-        characters!: string[];
-        concepts!: string[];
-        count_of_issues!: number;
-        issues!: any[]
+        issue_number!: number;
+        volume_id!: number;
+        name!: string;
+        price!: number;
+        image!: string;
 
 
         static associate(models: any) {
@@ -31,19 +33,25 @@ module.exports = (sequelize: any, DataTypes: any) => {
             allowNull: false,
             primaryKey: true,
         },
-        characters: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
+        issue_number: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+        },
+        volume_id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
-        concepts: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-        },
-        count_of_issues: {
+        price: {
             type: DataTypes.INTEGER,
         },
-        issues: {
-            type: DataTypes.ARRAY(DataTypes.STRING),
-        }
+        name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        image: {
+            type: DataTypes.STRING,
+        },
+
     }, {
         sequelize,
         timestamps: false,
