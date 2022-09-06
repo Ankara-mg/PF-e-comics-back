@@ -43,6 +43,6 @@ const config = {
     });
 
     router.get('/logout', (req: any, res: { oidc: { logout: (arg0: { returnTo: string; }) => void; }; }) => {
-      res.oidc.logout({ returnTo: '/comics' })
+      res.oidc.logout({ returnTo: '' })
     });
 export default router;

@@ -22,11 +22,13 @@ export const getComics = async () => {
                     name: e.name,
                     id: e.id,
                     image: e.image.original_url,
-                    description: e.deck,
+                    description: e.description,
                     release: e.date_added.slice(0, 10),
                     episodes: e.count_of_issues,
                     createInDb: false,
-                    publisher: e.publisher.name
+                    publisher: e.publisher.name,
+                    deck: e.deck,
+
                 })
             })
             await db.Comics.bulkCreate(comics)

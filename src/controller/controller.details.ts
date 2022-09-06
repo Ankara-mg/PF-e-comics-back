@@ -21,7 +21,7 @@ export const getDetails = async (req: Request, res: Response) => {
 
             api = await axios.get(`https://comicvine.gamespot.com/api/volume/4050-${id}/?api_key=${apiKey}&format=json`)
             const apiData = api.data.results 
-            if(apiData){
+            if(Object.entries(apiData).length > 0){
                 const comicDetail: (object) = {
                     id: apiData.id,
                     name: apiData.name,
@@ -40,9 +40,9 @@ export const getDetails = async (req: Request, res: Response) => {
                     }
                 res.send(comicDetail)
 
-        } else throw "No se encontro ese comic"
+             }    else res.status(404).json([])
 
-    } else if (id<600){
+        } else if (id<600){
           api = await db.Comics.findAll({
             include:[{
                 model: db.Characters},
@@ -68,7 +68,7 @@ export const getDetails = async (req: Request, res: Response) => {
                 concepts: e.Concepts
             }
         })
-        res.send(auxiliar) 
+        res.send( auxiliar? auxiliar: []) 
 
         }
     } catch (e) {
