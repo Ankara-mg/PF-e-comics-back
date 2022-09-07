@@ -13,6 +13,7 @@ export const getComics = async () => {
         if(!com.length){
             const comics: (object)[] = []
             let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=100`
+            
             let dataList = await axios.get(listSeries)
     
             dataList.data.results.map(async(e: any) => {
@@ -115,6 +116,7 @@ export const SearchName = async(name: any) =>{
 
         datos = datos.data.results.map((e: any) => {
             names.push({
+                id:e.id,
                 name: e.name,
                 description: e.deck,
                 image: e.image.original_url,
