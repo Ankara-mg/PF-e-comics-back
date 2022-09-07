@@ -8,10 +8,10 @@ router.get('/', getComicsDB)
 
 router.post('/issues/:id', async (req, res) => {
   const { id } = req.params;
-  const { start, end } = req.body;
+  const { currentPage } = req.body;
 
   try {
-    let controller_result = await getIssues(id, start, end)
+    let controller_result = await getIssues(id, Number(currentPage))
     res.json(controller_result)
 
   } catch (error) {

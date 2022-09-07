@@ -7,6 +7,7 @@ interface IssuesAttributes {
     name: string
     price: number;
     image: string;
+    createInDb: boolean;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -17,6 +18,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         name!: string;
         price!: number;
         image!: string;
+        createInDb!: boolean;
 
 
         static associate(models: any) {
@@ -36,13 +38,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
         issue_number: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            unique: 'compositeIndex'
         },
         volume_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            unique: 'compositeIndex'
         },
         price: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.FLOAT,
         },
         name: {
             type: DataTypes.STRING,
@@ -50,7 +54,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         image: {
             type: DataTypes.STRING,
-        },
+        }, createInDb: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        }
 
     }, {
         sequelize,

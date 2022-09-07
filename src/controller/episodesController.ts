@@ -40,35 +40,77 @@ export const getComics = async () => {
 }
 //----------------------------carga los issues en la database-------------------------------------------------
 
-const random_price = (factor: number): number => {
-  return Math.random() * factor
+const random_price = (clasical: number): number => {
+  let factor_classic = clasical ? clasical : 50
+  let factor_price = 1 / (factor_classic * 2)
+  return (Math.random() / factor_price)
 }
 
-export const getIssues = async (id: string, start: number, end: number) => {
-  let results: any[] = []
+export const getIssues = async (id: string, currentPage: number = 0) => {
   try {
-    const detail = await getDetails(id)
-    let episodesList = detail.episodes.map((e: any) => e.id)
-    let episodesList_parts = episodesList.slice(start, end)
+    let issues_numbers_db: any = []
+    let in_db: any = []
+    let notIn_db: any = []
+    let detail = await getDetails(id);
 
-    for (const episode of episodesList_parts) {
-      let apiURL = `https://comicvine.gamespot.com/api/issue/4000-${episode}/?api_key=${apiKey}&format=json`
-      let data = await axios.get(`${apiURL}`).then(response => response.data);
 
-      results.push(data.results)
+    // pagination
+    let offset = 0
+    if (currentPage * 10 > detail.count_of_issues) {
+      offset = detail.count_of_issues - 10 < 0 ? 0 : detail.count_of_issues - 10
+
+    } else {
+      offset = currentPage * 10
     }
 
-    let format_results = results.map((e: any) => (
-      {
-        issue_number: e.issue_number,
-        volume_id: e.volume.id,
-        name: e.name,
-        price: 243,
-        image: e.image.original_url,
-      }
-    ))
+    let issues_db = await db.Issues.findAll({
+      where: {
+        volume_id: id,
+        createInDb: true
+      },
+      order: [
+        ['issue_number', 'ASC'],
+      ],
+      limit: 10
+    })
 
-    await db.Issues.bulkCreate(format_results)
+    if (issues_db.length > 0) {
+      issues_numbers_db = issues_db.map((issue: any) => (issue.issue_number))
+    }
+
+    let apiURL = `https://comicvine.gamespot.com/api/issues/?api_key=${apiKey}&filter=volume:${id}&sort=issue_number:asc&format=json&offset=${offset}&limit=${10}`;
+    let data = await axios.get(`${apiURL}`).then(response => response.data);
+
+
+    let format_results = data.results.map((e: any) => {
+
+      let classical_year = Number(`${e.cover_date}`.split("-")[0])
+      let price_random = random_price(classical_year)
+
+      return {
+        issue_number: Number(e.issue_number),
+        volume_id: e.volume.id,
+        release: e.cover_date,
+        name: e.name,
+        price: price_random,
+        image: e.image.original_url,
+        createInDb: true
+      }
+    })
+
+
+
+    in_db = format_results.filter((issue: any) => issues_numbers_db.includes(issue.issue_number))
+    notIn_db = format_results.filter((issue: any) => !issues_numbers_db.includes(issue.issue_number))
+
+    if (in_db.length === 10) {
+      console.log("from db", issues_db.length);
+      return issues_db
+    }
+
+
+    await db.Issues.bulkCreate(notIn_db)
+    console.log("from api");
     return format_results
 
   } catch (error) {
