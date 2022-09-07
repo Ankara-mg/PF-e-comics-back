@@ -1,6 +1,6 @@
 import axios from "axios"
 import { Request, Response } from "express";
-import { getDetails } from './controller.details';
+// import { getDetails } from './controller.details';
 import db from "../../models";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 import { Op } from 'sequelize'
@@ -46,23 +46,8 @@ const random_price = (clasical: number): number => {
   return (Math.random() / factor_price)
 }
 
-export const getIssues = async (id: string, currentPage: number = 0) => {
+export const getIssues = async (id: string) => {
   try {
-    let issues_numbers_db: any = []
-    let in_db: any = []
-    let notIn_db: any = []
-    let detail = await getDetails(id);
-
-
-    // pagination
-    let offset = 0
-    if (currentPage * 10 > detail.count_of_issues) {
-      offset = detail.count_of_issues - 10 < 0 ? 0 : detail.count_of_issues - 10
-
-    } else {
-      offset = currentPage * 10
-    }
-
     let issues_db = await db.Issues.findAll({
       where: {
         volume_id: id,
@@ -70,25 +55,24 @@ export const getIssues = async (id: string, currentPage: number = 0) => {
       },
       order: [
         ['issue_number', 'ASC'],
-      ],
-      limit: 10
+      ]
     })
 
-    if (issues_db.length > 0) {
-      issues_numbers_db = issues_db.map((issue: any) => (issue.issue_number))
+    if (issues_db && issues_db.length > 0) {
+      console.log("issues from db", issues_db.length);
+      return issues_db;
     }
 
-    let apiURL = `https://comicvine.gamespot.com/api/issues/?api_key=${apiKey}&filter=volume:${id}&sort=issue_number:asc&format=json&offset=${offset}&limit=${10}`;
+    let apiURL = `https://comicvine.gamespot.com/api/issues/?api_key=${apiKey}&filter=volume:${id}&sort=issue_number:asc&format=json`;
+
     let data = await axios.get(`${apiURL}`).then(response => response.data);
-
-
     let format_results = data.results.map((e: any) => {
 
       let classical_year = Number(`${e.cover_date}`.split("-")[0])
       let price_random = random_price(classical_year)
 
       return {
-        issue_number: Number(e.issue_number),
+        issue_number: e.issue_number,
         volume_id: e.volume.id,
         release: e.cover_date,
         name: e.name,
@@ -98,19 +82,8 @@ export const getIssues = async (id: string, currentPage: number = 0) => {
       }
     })
 
-
-
-    in_db = format_results.filter((issue: any) => issues_numbers_db.includes(issue.issue_number))
-    notIn_db = format_results.filter((issue: any) => !issues_numbers_db.includes(issue.issue_number))
-
-    if (in_db.length === 10) {
-      console.log("from db", issues_db.length);
-      return issues_db
-    }
-
-
-    await db.Issues.bulkCreate(notIn_db)
-    console.log("from api");
+    console.log("issues from api", format_results.length);
+    await db.Issues.bulkCreate(format_results)
     return format_results
 
   } catch (error) {

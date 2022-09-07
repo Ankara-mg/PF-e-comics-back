@@ -6,16 +6,14 @@ const router = Router()
 
 router.get('/', getComicsDB)
 
-router.post('/issues/:id', async (req, res) => {
+router.get('/issues/:id', async (req, res) => {
   const { id } = req.params;
-  const { currentPage } = req.body;
-
   try {
-    let controller_result = await getIssues(id, Number(currentPage))
+    let controller_result = await getIssues(id)
     res.json(controller_result)
 
   } catch (error) {
-    res.status(404).json(error)
+    res.status(404).json({ error })
   }
 })
 
