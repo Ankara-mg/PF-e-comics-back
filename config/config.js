@@ -1,21 +1,14 @@
-require('dotenv').config();  
+require('dotenv').config();
 
-/*
- - DATABASE_URL=postgresql://${{ PGUSER }}:${{ PGPASSWORD }}@${{ PGHOST }}:${{ PGPORT }}/${{ PGDATABASE }}
- - PGDATABASE=railway
- - PGHOST=containers-us-west-34.railway.app
- - PGPASSWORD=InkJ2AcR3c2CwKTBKLgy
- - PGPORT=6533
- - PGUSER=postgres
-*/
-module.exports ={
+module.exports = {
   "development": {
     "username": "postgres",
-    "host": "containers-us-west-34.railway.app",
-    "port": 6533,
-    "database": "railway",
+    "host": "localhost",
+    "port": 5432,
+    "database": "ecomics",
     "dialect": "postgres",
-    "password" : "InkJ2AcR3c2CwKTBKLgy" 
+    "password": "bode",
+    "logging": false
   },
   "test": {
     "username": "root",

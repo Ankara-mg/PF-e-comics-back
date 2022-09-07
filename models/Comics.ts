@@ -5,9 +5,11 @@ interface ComicAttributes {
   name: string;
   image?: string;
   description?: string;
+  deck?:string,
   release: string;
   episodes: number;
   createInDb: boolean;
+  start_year: string;
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
@@ -19,14 +21,16 @@ module.exports = (sequelize:any, DataTypes:any) => {
     release!: string;
     episodes!: number;
     createInDb!: boolean;
+    deck?:string;
+    start_year!: string;
     //api_detail_url!: string
 
     static associate (models:any){
       Comics.belongsToMany(models.Characters, {through: 'character_comic'})
       Comics.belongsToMany(models.Concepts, {through: 'concept_comic'})
-      //Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
+      Comics.belongsToMany(models.Purchases, {through: 'purchase_comic'})
       Comics.belongsToMany(models.Users, {through: 'favorites_list'})
-     // Comics.belongsTo(models.Publishers, { foreignKey: "publisher_Name"})
+      //Comics.belongsTo(models.Publishers, { foreignKey: "publisher_Name"})
       Comics.hasMany(models.Ratings)
     }
   }
@@ -64,7 +68,14 @@ module.exports = (sequelize:any, DataTypes:any) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-
+      deck:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      start_year: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       createInDb: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
