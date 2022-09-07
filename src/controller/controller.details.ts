@@ -29,6 +29,7 @@ export const getDetails = async (req: Request, res: Response) => {
                     image: apiData.image.original_url,
                     publisher: apiData.publisher.name,
                     release_year: apiData.start_year,
+                    description: apiData.description,
                     episodes: apiData.issues.map((e: { name: any; id: any; issue_number: any; }) =>   {
                         return {
                             name: e.name,
@@ -64,7 +65,7 @@ export const getDetails = async (req: Request, res: Response) => {
                 publisher: e.publisher,
                 characters: e.Characters,
                 episodes: e.episodes,
-
+                
                 concepts: e.Concepts
             }
         })
