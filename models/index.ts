@@ -12,10 +12,8 @@ let sequelize: any;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(`postgresql://${process.env.PGUSER}:${process.env.PGPASSWORD}@${process.env.PGHOST}:${process.env.PGPORT}/${process.env.PGDATABASE}`)
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
-
-
 
 fs
   .readdirSync(__dirname)
@@ -23,7 +21,7 @@ fs
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.ts');
   })
   .forEach((file: any) => {
-    console.log(file)
+    // console.log(file)
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;
   });

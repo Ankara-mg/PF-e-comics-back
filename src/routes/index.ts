@@ -1,5 +1,5 @@
-const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
+// const { auth } = require('express-openid-connect');
+// const { requiresAuth } = require('express-openid-connect');
 const { Router } = require('express');
 //import issuesRoutes from './issuesRoutes'
 require ('dotenv').config()
@@ -21,28 +21,28 @@ const config = {
   
     const router = Router();
 
-    router.use(auth(config));
+    // router.use(auth(config));
 
-    router.get('/', (req: { oidc: { isAuthenticated: () => any; }; }, res: { send: (arg0: string) => void; }) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-    });
+    // router.get('/', (req: { oidc: { isAuthenticated: () => any; }; }, res: { send: (arg0: string) => void; }) => {
+    // res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+    // });
 
-    router.use('/characters', requiresAuth(), routesCharacter )
+    router.use('/characters', routesCharacter )
     router.use('/comics',  episodesRoutes)
     router.use('/concepts', routerConcepts )
     router.use('/publishers', routerPublishers)
     router.use('/user', routerUsers)
     //router.use('/issues', issuesRoutes)
 
-    router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
-      res.oidc.login({
-        authorizationParams: {
-          screen_hint: 'signup',
-        },
-      });
-    });
+    // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
+    //   res.oidc.login({
+    //     authorizationParams: {
+    //       screen_hint: 'signup',
+    //     },
+    //   });
+    // });
 
-    router.get('/logout', (req: any, res: { oidc: { logout: (arg0: { returnTo: string; }) => void; }; }) => {
-      res.oidc.logout({ returnTo: '' })
-    });
+    // router.get('/logout', (req: any, res: { oidc: { logout: (arg0: { returnTo: string; }) => void; }; }) => {
+    //   res.oidc.logout({ returnTo: '' })
+    // });
 export default router;
