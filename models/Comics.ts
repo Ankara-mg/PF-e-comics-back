@@ -1,4 +1,4 @@
-import { DataTypes, UUIDV1, Model, Sequelize } from 'sequelize'
+import { DataTypes, UUIDV1, Model, Sequelize, STRING } from 'sequelize'
 
 interface ComicAttributes {
   id: number;
@@ -80,7 +80,18 @@ module.exports = (sequelize:any, DataTypes:any) => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
-      }
+      },
+      // stock: {
+      //   type: DataTypes.INTEGER,
+      //   defaultValue: 100
+      // }
+      // characters: {
+      //   type: DataTypes.ARRAY(DataTypes.STRING)
+      // },
+      // issues: {
+      //   type: DataTypes.JSON(DataTypes.STRING)
+
+      // }
     }, {sequelize, 
       timestamps: true,
       modelName: "Comics"
