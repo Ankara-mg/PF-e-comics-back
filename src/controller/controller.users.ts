@@ -1,62 +1,68 @@
-import axios from "axios"
+//@ts-nocheck
 import { Request, Response } from "express";
-import { where } from "sequelize/types";
 import db from "../../models";
-const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
+import router from "../routes";
+require('dotenv').config()
 
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const secret = process.env.SESSION_SECRET
 
+//---------------------------------http://localhost:3000/user/singup---------------------------------------------------
 
-
-export const userSignup = async(req: Request, res: Response) => {
-    const { username, email, address, password} = req.body
+export const userSignup = async (req: Request, res: Response) => {
+    const { username, email, password } = req.body
+    const rondasDeSal = 10;
     try {
-        const exists = await db.Users.findOne({where: {email: email}});
-        if (exists) return res.json({info :"Este email ya se encuentra registrado"}) 
-        
-        const newUser = await db.Users.findOrCreate({
-            where:{
-                username: username.charAt(0).toUpperCase(),
-                email: email.toLowerCase() ,
-                address, 
-                password
-            }
+        const exists = await db.Users.findOne({ where: { email: email } });
+        if (exists) return res.json({ info: "Este email ya se encuentra registrado" })
+        const newUser = await db.Users.create({
+            username: username,
+            email: email.toLowerCase(),
+            password: await bcrypt.hash(password, rondasDeSal)
         })
-
-        res.status(200).send("usuario registrado con exito")
-
-        // user.save(function (err) {
-        //     return res.status(200).send({ token: service.createToken(user) });
-        //   });
-      ;
+    const user = await db.Users.findOne({ where: { email: email } })
+    const token = jwt.sign({ id: user.id }, secret, { expiresIn: 60 * 60 * 24 })
+    res.status(200).send({ auth: true, token })
+            ;
     } catch (error) {
         console.log(error)
     }
 }
 
+//---------------------------------http://localhost:3000/user/login------------------------------------------------
 
-
-export const userLogin = async(req: Request, res: Response) =>{
-        const {email, password} = req.body
+export const userLogin = async (req: Request, res: Response) => {
+    const { email, password } = req.body
     try {
-        const userEmail =   db.Users.findOne({
+        const user = await db.Users.findOne({
             where: {
-                email: email.toLowerCase(),
-                password: password   
+                email: email.toLowerCase()
             }
         })
-        if(userEmail){
-            //return res.status(200).send({ token: service.createToken(user) });
-        } 
+        if (!user) {
+            return res.status(404).send("El email no esta registrado");
+        }
+        const validatePassword = await bcrypt.compare(password, user.password)
+        if (!validatePassword) {
+            res.status(401).json({ auth: false, token: null })
+        }
+        const token = jwt.sign({ id: user.id }, secret, { expiresIn: 60 * 60 * 24 })
+        console.log(token)
+        res.json({ auth: true, token })
 
-
-        
     } catch (error) {
         console.log(error)
     }
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
+// export const verificar =  async(req: Request, res: Response)=>{
+//     const user = await db.Users.findByPk(req.userId, {password: 0});
+//     console.log(user)
+//     if(!user){
+//         return res.status(404).send("no se encuentra el usuario")
+//     }
+//     res.send(user)
+// }

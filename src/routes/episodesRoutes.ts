@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { getDetails } from '../controller/controller.details';
 import { getComicsDB, postComics, getAllInfo, SearchName, getIssues } from '../controller/episodesController';
-
+import { verifyToken } from '../controller/verifyToken';
 const router = Router()
 
 router.get('/', getComicsDB)
