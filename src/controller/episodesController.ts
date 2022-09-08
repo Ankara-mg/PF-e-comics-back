@@ -163,10 +163,10 @@ export const postComics = async (req: Request, res: Response) => {
 export const SearchName = async (name: any) => {
   if (name.length > 0) {
     try {
-      const url = `https://comicvine.gamespot.com/api/search/?api_key=${apiKey}&format=json&query=${name}&resources=volume`
-      let comics = await axios.get(url)
+      const apiUrl = `https://comicvine.gamespot.com/api/search/?api_key=${apiKey}&format=json&query=${name}&resources=volume&limit=100`
 
-      let result = comics.data.results.map((e: any) => (
+      let comics = await axios.get(apiUrl).then(response => response.data)
+      let result = comics.results.map((e: any) => (
         {
           id: e.id,
           name: e.name,

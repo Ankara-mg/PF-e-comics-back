@@ -7,6 +7,8 @@ interface IssuesAttributes {
     name: string
     price: number;
     image: string;
+    release: string;
+    description: string;
     createInDb: boolean;
 }
 
@@ -18,6 +20,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
         name!: string;
         price!: number;
         image!: string;
+        release!: string;
+        description!: string;
         createInDb!: boolean;
 
 
@@ -25,7 +29,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
             Issues.belongsToMany(models.Comics, { through: 'issues_comics' })
         }
     }
-
 
     Issues.init({
         id: {
@@ -48,7 +51,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
         price: {
             type: DataTypes.FLOAT,
         },
+        release: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        description: {
             type: DataTypes.STRING,
             allowNull: true,
         },
