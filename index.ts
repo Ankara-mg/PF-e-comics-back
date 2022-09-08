@@ -8,7 +8,7 @@ import { getCharacters } from "./src/controller/controller.characters";
 
 const port = process.env.PORT || 3000;
 
-db.sequelize.sync({ force: true }).then(async () => {
+db.sequelize.sync({ force: false }).then(async () => {
 
     app.listen(port, () => {
         getPublishers()

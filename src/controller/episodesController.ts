@@ -39,6 +39,58 @@ export const getComics = async () => {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------
+const random_price = (clasical: number): number => {
+  let factor_classic = clasical ? clasical : 50
+  let factor_price = 1 / (factor_classic * 2)
+  return (Math.random() / factor_price)
+}
+
+export const getIssues = async (id: string) => {
+  try {
+    let issues_db = await db.Issues.findAll({
+      where: {
+        volume_id: id,
+        createInDb: true
+      },
+      order: [
+        ['issue_number', 'ASC'],
+      ]
+    })
+
+    if (issues_db && issues_db.length > 0) {
+      console.log("issues from db", issues_db.length);
+      return issues_db;
+    }
+
+    let apiURL = `https://comicvine.gamespot.com/api/issues/?api_key=${apiKey}&filter=volume:${id}&sort=issue_number:asc&format=json`;
+
+    let data = await axios.get(`${apiURL}`).then(response => response.data);
+    let format_results = data.results.map((e: any) => {
+
+      let classical_year = Number(`${e.cover_date}`.split("-")[0])
+      let price_random = random_price(classical_year)
+
+      return {
+        issue_number: e.issue_number,
+        volume_id: e.volume.id,
+        release: e.cover_date,
+        name: e.name,
+        price: price_random,
+        image: e.image.original_url,
+        createInDb: true
+      }
+    })
+
+    console.log("issues from api", format_results.length);
+    await db.Issues.bulkCreate(format_results)
+    return format_results
+
+  } catch (error) {
+    return error
+  }
+}
+
 
 //----------------------------- http://localhost:3000/comics -----------------------------------
 
