@@ -44,13 +44,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         password: {
             type: DataTypes.STRING,
-<<<<<<< HEAD
-        }
-=======
             allowNull: false
         },
 
->>>>>>> 859d2ca107ec8f74a90da13db7f2aaae59c09aa6
     },{sequelize, timestamps: true, modelName: 'Users'})
 
     return Users

@@ -1,25 +1,16 @@
-<<<<<<< HEAD
-import { Router } from 'express';
-=======
 // const { auth } = require('express-openid-connect');
 // const { requiresAuth } = require('express-openid-connect');
 const { Router } = require('express');
 //import issuesRoutes from './issuesRoutes'
 require ('dotenv').config()
 //const {SESSION_SECRET, BASE_URL, AUTH0_CLIENT_ID, AUTH0_ISSUER_BASE_URL} = process.env 
->>>>>>> 859d2ca107ec8f74a90da13db7f2aaae59c09aa6
 import routesCharacter from './router.characters'
 import episodesRoutes from './episodesRoutes';
 import routerConcepts from './router.concepts'
 import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
+import pagos from './pagos'
 
-<<<<<<< HEAD
-
- 
- const router = Router();
-
-=======
 const config = {
     authRequired: false,
     auth0Logout: true,
@@ -30,15 +21,9 @@ const config = {
   };
   
     const router = Router();
->>>>>>> 859d2ca107ec8f74a90da13db7f2aaae59c09aa6
 
     // router.use(auth(config));
 
-<<<<<<< HEAD
-
-
-
-=======
     // router.get('/', (req: { oidc: { isAuthenticated: () => any; }; }, res: { send: (arg0: string) => void; }) => {
     // res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
     // });
@@ -48,6 +33,7 @@ const config = {
     router.use('/concepts', routerConcepts )
     router.use('/publishers', routerPublishers)
     router.use('/user', routerUsers)
+    router.use('/checkout',  pagos)
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
@@ -61,5 +47,4 @@ const config = {
     // router.get('/logout', (req: any, res: { oidc: { logout: (arg0: { returnTo: string; }) => void; }; }) => {
     //   res.oidc.logout({ returnTo: '' })
     // });
->>>>>>> 859d2ca107ec8f74a90da13db7f2aaae59c09aa6
 export default router;

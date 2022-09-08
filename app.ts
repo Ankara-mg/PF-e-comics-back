@@ -3,16 +3,17 @@ import routes from './src/routes/index'
 //import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 // import { dotenv } from "dotenv";
+require ('dotenv').config()
 
 
 //----------
 
 //import morgan from 'morgan';
-//import cors from 'cors'
+import cors from 'cors'
 const app = express();
 
 //cors:
-//app.use(cors({origin:'*'}))
+app.use(cors({origin:'*'}))
 //midlewares:
 
 //----------
