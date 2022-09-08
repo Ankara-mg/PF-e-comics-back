@@ -1,6 +1,5 @@
 import axios from "axios"
 import { Request, Response } from "express";
-// import { getDetails } from './controller.details';
 import db from "../../models";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 import { Op } from 'sequelize'
@@ -14,6 +13,7 @@ export const getComics = async () => {
     if (!com.length) {
       const comics: (object)[] = []
       let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=100`
+
       let dataList = await axios.get(listSeries)
 
       dataList.data.results.map(async (e: any) => {
@@ -23,8 +23,8 @@ export const getComics = async () => {
           name: e.name,
           id: e.id,
           image: e.image.original_url,
-          // description: e.description,
-          // release: e.date_added.slice(0, 10),
+          description: e.description,
+          release: e.date_added.slice(0, 10),
           episodes: e.count_of_issues,
           createInDb: false,
           publisher: e.publisher.name,
@@ -38,8 +38,8 @@ export const getComics = async () => {
     console.log(error)
   }
 }
-//----------------------------carga los issues en la database-------------------------------------------------
 
+//-----------------------------------------------------------------------------------------------------
 const random_price = (clasical: number): number => {
   let factor_classic = clasical ? clasical : 50
   let factor_price = 1 / (factor_classic * 2)
@@ -96,8 +96,7 @@ export const getIssues = async (id: string) => {
 
 export const getComicsDB = async (req: Request, res: Response) => {
   try {
-    const allcomicsDB = await db.Comics.findAll({
-    });
+    const allcomicsDB = await db.Comics.findAll();
 
     const comics = allcomicsDB.map((char: {
 
@@ -107,13 +106,13 @@ export const getComicsDB = async (req: Request, res: Response) => {
       return {
         id: char.id,
         name: char.name,
-        // description: char.description,
+        description: char.description,
         image: char.image,
         //api_url_detail: char.api_url_detail,
-        // release: char.release,
-        n_episodes: char.episodes,
+        release: char.release,
+        episodes: char.episodes,
         createInDb: char.createInDb,
-        // publisher: char.publisher
+        publisher: char.publisher
 
       }
     })
@@ -178,8 +177,6 @@ export const SearchName = async (name: any) => {
     } catch (error) {
       return error
     }
-  } else {
-    return []
   }
 }
 
