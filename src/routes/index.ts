@@ -9,6 +9,7 @@ import episodesRoutes from './episodesRoutes';
 import routerConcepts from './router.concepts'
 import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
+import routerCheckout from './checkout.routes';
 
 const config = {
     authRequired: false,
@@ -32,6 +33,7 @@ const config = {
     router.use('/concepts', routerConcepts )
     router.use('/publishers', routerPublishers)
     router.use('/user', routerUsers)
+    router.use('/checkout', routerCheckout)
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
