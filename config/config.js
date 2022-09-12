@@ -3,11 +3,11 @@ require('dotenv').config();
 module.exports ={
   "development": {
     "username": "postgres",
-    "host": "containers-us-west-34.railway.app",
-    "port": 6533,
+    "host": "containers-us-west-29.railway.app",
+    "port": 7152,
     "database": "railway",
     "dialect": "postgres",
-    "password" : "InkJ2AcR3c2CwKTBKLgy" 
+    "password" : "x1t4CW54M7AEv3zK2WAC" 
   },
   "test": {
     "username": "root",
