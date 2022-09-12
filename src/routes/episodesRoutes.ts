@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import { getDetails } from '../controller/controller.details';
 import { getComicsDB, postComics, getAllInfo, SearchName, getIssues } from '../controller/episodesController';
-import { verifyToken } from '../controller/verifyToken';
+import { verifyToken} from '../middleware/middleware';
+import { Request, Response } from "express";
 const router = Router()
 
-router.get('/', getComicsDB)
+router.get('/',[verifyToken], getComicsDB)
 
 router.get('/issues/:id', async (req, res) => {
   const { id } = req.params;

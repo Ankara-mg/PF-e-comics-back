@@ -21,7 +21,11 @@ module.exports = (sequelize: any, DataTypes: any) => {
             Users.hasMany(models.Ratings)
             Users.hasMany(models.Purchases)
             Users.belongsToMany(models.Comics, {through: 'favorites_list'})
+<<<<<<< HEAD
             // Users.belongsToMany(models.favorites_list, {through: 'favorites_users'})
+=======
+            Users.hasMany(models.Roles)
+>>>>>>> ebdcba7bff5f173b1477b42371e2c3a5c80aaebf
         }
     }
     Users.init({
@@ -35,19 +39,22 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
+           
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
         },
-        // address: {
-        //     type: DataTypes.STRING,
-        // },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+
         },
+        rol: {
+            type: DataTypes.STRING,
+            allowNull: false 
+        }
 
     },{sequelize, timestamps: true, modelName: 'Users'})
 
