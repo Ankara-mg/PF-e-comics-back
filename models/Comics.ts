@@ -32,6 +32,8 @@ module.exports = (sequelize:any, DataTypes:any) => {
       Comics.belongsToMany(models.Users, {through: 'favorites_list'})
       //Comics.belongsTo(models.Publishers, { foreignKey: "publisher_Name"})
       Comics.hasMany(models.Ratings)
+
+      // Comics.belongsToMany(models.favorites_list, {through: 'favorites_comics'})
     }
   }
   Comics.init({

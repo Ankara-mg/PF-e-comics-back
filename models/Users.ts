@@ -21,6 +21,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
             Users.hasMany(models.Ratings)
             Users.hasMany(models.Purchases)
             Users.belongsToMany(models.Comics, {through: 'favorites_list'})
+            // Users.belongsToMany(models.favorites_list, {through: 'favorites_users'})
         }
     }
     Users.init({
