@@ -13,6 +13,7 @@ export const getComics = async () => {
         if(!com.length){
             const comics: (object)[] = []
             let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=100`
+            
             let dataList = await axios.get(listSeries)
     
             dataList.data.results.map(async(e: any) => {
@@ -22,11 +23,13 @@ export const getComics = async () => {
                     name: e.name,
                     id: e.id,
                     image: e.image.original_url,
-                    description: e.deck,
+                    description: e.description,
                     release: e.date_added.slice(0, 10),
                     episodes: e.count_of_issues,
                     createInDb: false,
-                    publisher: e.publisher.name
+                    publisher: e.publisher.name,
+                    deck: e.deck,
+
                 })
             })
             await db.Comics.bulkCreate(comics)
@@ -34,6 +37,58 @@ export const getComics = async () => {
     } catch (error) {
         console.log(error)
     }
+}
+
+//-----------------------------------------------------------------------------------------------------
+const random_price = (clasical: number): number => {
+  let factor_classic = clasical ? clasical : 50
+  let factor_price = 1 / (factor_classic * 2)
+  return (Math.random() / factor_price)
+}
+
+export const getIssues = async (id: string) => {
+  try {
+    let issues_db = await db.Issues.findAll({
+      where: {
+        volume_id: id,
+        createInDb: true
+      },
+      order: [
+        ['issue_number', 'ASC'],
+      ]
+    })
+
+    if (issues_db && issues_db.length > 0) {
+      console.log("issues from db", issues_db.length);
+      return issues_db;
+    }
+
+    let apiURL = `https://comicvine.gamespot.com/api/issues/?api_key=${apiKey}&filter=volume:${id}&sort=issue_number:asc&format=json`;
+
+    let data = await axios.get(`${apiURL}`).then(response => response.data);
+    let format_results = data.results.map((e: any) => {
+
+      let classical_year = Number(`${e.cover_date}`.split("-")[0])
+      let price_random = random_price(classical_year)
+
+      return {
+        issue_number: e.issue_number,
+        volume_id: e.volume.id,
+        release: e.cover_date,
+        name: e.name,
+        price: price_random,
+        image: e.image.original_url,
+        createInDb: true
+      }
+    })
+
+    console.log("issues from api", format_results.length);
+    await db.Issues.bulkCreate(format_results)
+    return format_results
+
+  } catch (error) {
+    return error
+  }
 }
 
 
@@ -113,6 +168,7 @@ export const SearchName = async(name: any) =>{
 
         datos = datos.data.results.map((e: any) => {
             names.push({
+                id:e.id,
                 name: e.name,
                 description: e.deck,
                 image: e.image.original_url,

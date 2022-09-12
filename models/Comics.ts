@@ -1,13 +1,15 @@
-import { DataTypes, UUIDV1, Model, Sequelize } from 'sequelize'
+import { DataTypes, UUIDV1, Model, Sequelize, STRING } from 'sequelize'
 
 interface ComicAttributes {
   id: number;
   name: string;
   image?: string;
   description?: string;
+  deck?:string,
   release: string;
   episodes: number;
   createInDb: boolean;
+  start_year: string;
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
@@ -19,6 +21,8 @@ module.exports = (sequelize:any, DataTypes:any) => {
     release!: string;
     episodes!: number;
     createInDb!: boolean;
+    deck?:string;
+    start_year!: string;
     //api_detail_url!: string
 
     static associate (models:any){
@@ -64,12 +68,30 @@ module.exports = (sequelize:any, DataTypes:any) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-
+      deck:{
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+      start_year: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       createInDb: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
-      }
+      },
+      // stock: {
+      //   type: DataTypes.INTEGER,
+      //   defaultValue: 100
+      // }
+      // characters: {
+      //   type: DataTypes.ARRAY(DataTypes.STRING)
+      // },
+      // issues: {
+      //   type: DataTypes.JSON(DataTypes.STRING)
+
+      // }
     }, {sequelize, 
       timestamps: true,
       modelName: "Comics"
