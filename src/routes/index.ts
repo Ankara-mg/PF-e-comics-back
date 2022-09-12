@@ -5,6 +5,7 @@ import episodesRoutes from './episodesRoutes';
 import routerConcepts from './router.concepts'
 import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
+import routerAdmin from './router.Admin';
 import routerCheckout from './checkout.routes';
 
 
@@ -16,5 +17,6 @@ router.use('/concepts', routerConcepts)
 router.use('/publishers', routerPublishers)
 router.use('/user', routerUsers)
 router.use('/checkout', routerCheckout)
+router.use('/admin', routerAdmin)
 
 export default router;
