@@ -9,7 +9,7 @@ import { createRoles } from "./src/roles/initialRoles";
 
 const port = process.env.PORT || 3000;
 
-db.sequelize.sync({ force: false }).then(async () => {
+db.sequelize.sync({ force: true }).then(async () => {
 
     app.listen(port, () => {
         getPublishers()
