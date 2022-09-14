@@ -33,7 +33,7 @@ const config = {
     router.use('/concepts', routerConcepts )
     router.use('/publishers', routerPublishers)
     router.use('/user', routerUsers)
-    router.use('/checkout', routerCheckout)
+    router.use('/shop/checkout', routerCheckout)
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {

@@ -6,17 +6,20 @@ require("dotenv")
 const router = Router()
 const { STRIPE_KEY } = process.env
 const stripe = new Stripe(STRIPE_KEY)
-
+console.log(STRIPE_KEY)
+ 
 router.post('/' , async (req: Request, res: Response) => {
 
     try {
-        const { id, price, mailUsuario } = req.body
+        
+        let { id, price, carrito } = req.body
+        price = price.toFixed(2) * 100
     
         //findOne(email)
         const payment = await stripe.paymentIntents.create({
             amount: price, // Amount es el precio, no mandar como price
-            currency: "USD",
-            description: "comic", // ACA PASARLE EL NOMBRE DEL COMIC!!
+            currency: "COP",
+            description: "comic", 
             payment_method: id,
             confirm: true,
             // El email del usuario para que reciba el detalle
