@@ -5,9 +5,11 @@ import { verifyToken} from '../middleware/middleware';
 import { Request, Response } from "express";
 const router = Router()
 
-router.get('/',[verifyToken], getComicsDB)
+router.get('/', getComicsDB)
 
-router.get('/issues/:id', async (req, res) => {
+
+
+router.get('/issues/:id',  async (req, res) => {
   const { id } = req.params;
   try {
     let controller_result = await getIssues(id)
@@ -39,6 +41,6 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', postComics)
+router.post('/' , postComics)
 
 export default router;

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { verifyToken } from "../middleware/middleware";
 const { Router } = require('express')
 const Stripe = require('stripe')
 require("dotenv")
@@ -7,7 +8,7 @@ const router = Router()
 const { STRIPE_KEY } = process.env
 const stripe = new Stripe(STRIPE_KEY)
 
-router.post('/' , async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
 
     try {
         const { id, price, mailUsuario } = req.body
