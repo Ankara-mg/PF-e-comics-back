@@ -6,6 +6,7 @@ interface UserAttributes {
     username: string;
     email: string;
     address?: string;
+    password:string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -14,11 +15,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username!: string;
         email!: string;
         address?: string;
+        password!: string;
 
         static associate (models:any){
             Users.hasMany(models.Ratings)
             Users.hasMany(models.Purchases)
-            Users.belongsToMany(models.Comics, {through: 'favorites_list'})
+            Users.belongsToMany(models.Issues, {
+                through: 'favorites_list',
+                as: 'issues', 
+                foreignKey: 'userId',
+                otherKey: 'issuesId'
+            })
             Users.hasMany(models.Roles)
         }
     }
@@ -33,7 +40,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
-           
+        
         },
         email: {
             type: DataTypes.STRING,
