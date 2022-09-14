@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 const { Router } = require('express')
 const Stripe = require('stripe')
 require("dotenv")
@@ -10,8 +10,7 @@ console.log(STRIPE_KEY)
  
 router.post('/' , async (req: Request, res: Response) => {
 
-    try {
-        
+    try {        
         let { id, price, carrito } = req.body
         price = price.toFixed(2) * 100
     
@@ -26,7 +25,6 @@ router.post('/' , async (req: Request, res: Response) => {
             //receipt_email: mailUsuario, 
             //customer: idUsuario,
         })
-    
         res.send("Disfrute de su comic :)")
     } catch (error: any) {
         res.status(418).json({error: error.raw.message})

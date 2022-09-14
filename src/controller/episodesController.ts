@@ -59,7 +59,7 @@ export const getIssues = async (id: string) => {
     })
 
     if (issues_db && issues_db.length > 0) {
-      console.log("issues from db", issues_db.length);
+    //   console.log("issues from db", issues_db.length);
       return issues_db;
     }
 
@@ -82,7 +82,7 @@ export const getIssues = async (id: string) => {
       }
     })
 
-    console.log("issues from api", format_results.length);
+    // console.log("issues from api", format_results.length);
     await db.Issues.bulkCreate(format_results)
     return format_results
 
@@ -113,7 +113,7 @@ export const getComicsDB = async(req: Request, res: Response) =>{
                 episodes: char.episodes,
                 createInDb: char.createInDb,
                 publisher: char.publisher
-               
+            
             }
         })
         res.send(comics)
@@ -211,4 +211,13 @@ export const getAllInfo = async (req: Request, res: Response) => {
         console.log('Error en info total');
         }
 }
+
+export const loggin = async (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
+    res.oidc.login({
+        authorizationParams: {
+            screen_hint: 'signup',
+            },
+        });
+    };
+
 

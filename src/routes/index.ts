@@ -10,6 +10,7 @@ import routerConcepts from './router.concepts'
 import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
 import routerCheckout from './checkout.routes';
+import routerFavs from './routerFavorite'
 
 const config = {
     authRequired: false,
