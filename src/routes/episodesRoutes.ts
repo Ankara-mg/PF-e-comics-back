@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { getDetails } from '../controller/controller.details';
 import { getComicsDB, postComics, getAllInfo, SearchName, getIssues } from '../controller/episodesController';
-import { verifyToken } from '../controller/verifyToken';
+import { verifyToken } from '../middleware/middleware';
+import { Request, Response } from "express";
 const router = Router()
 
 router.get('/', getComicsDB)
@@ -38,6 +39,14 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', postComics)
+router.post('/', async (req, res) => {
+  try {
+    let controller = await postComics(req.body)
+    res.json(controller)
+  } catch (error: any) {
+    res.status(500).json({ error: error.message })
+  }
+
+})
 
 export default router;

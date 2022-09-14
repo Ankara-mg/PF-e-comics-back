@@ -6,7 +6,6 @@ interface UserAttributes {
     username: string;
     email: string;
     password: string;
-    code: string;
     rol: string;
     address?: string;
 }
@@ -17,14 +16,14 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username!: string;
         email!: string;
         password!: string;
-        code!: string;
         rol!: string;
         address?: string;
 
         static associate(models: any) {
             Users.hasMany(models.Ratings)
             Users.hasMany(models.Purchases)
-            Users.belongsToMany(models.Comics, { through: 'favorites_list' })
+            Users.belongsToMany(models.Comics, {through: 'favorites_list'})
+            Users.hasMany(models.Roles)
         }
     }
     Users.init({
@@ -37,7 +36,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         username: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
+           
         },
         email: {
             type: DataTypes.STRING,
@@ -51,21 +51,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false
-        },
-        code: {
-            type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+
         },
         rol: {
             type: DataTypes.STRING,
-            allowNull: true,
-            defaultValue: "user"
-        },
-        address: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
+            allowNull: false 
+        }
 
 
     }, { sequelize, timestamps: true, modelName: 'Users' })

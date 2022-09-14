@@ -1,3 +1,4 @@
+//@ts-nocheck
 import axios from "axios"
 import { Request, Response } from "express";
 import db from "../../models";
@@ -126,34 +127,26 @@ export const getComicsDB = async (req: Request, res: Response) => {
 //----------------------------- http://localhost:3000/comics -----------------------------------
 
 
-export const postComics = async (req: Request, res: Response) => {
-  const { name, image, release, description, episodes, characters, publisher, concepts } = req.body
-  try {
-    const exists = await db.Comics.findOne({ where: { name: name } });
-    if (exists) return res.json({ Info: "Comic already exists" });
+export const postComics = async (data) => {
+  const { name, image, release, description, episodes, publisher, } = data
+  const exists = await db.Comics.findOne({ where: { name: name } });
+  if (exists) return ({ error: "Comic already exists" });
 
-    const newComic = await db.Comics.findOrCreate({
-      where: {
-        name: name.charAt(0).toUpperCase() + name.slice(1),
-        description,
-        release,
-        image,
-        episodes,
-        publisher
-      }
-    })
+  const newComic = await db.Comics.create(
+    {
+      name,
+      description,
+      release,
+      image,
+      episodes,
+      publisher
+    }
+  )
 
-    let characterDB = await db.Characters.findAll({ where: { name: characters }, })
-    // let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
-    let conceptsDB = await db.Concepts.findAll({ where: { name: concepts }, })
-
-    newComic[0].addCharacters(characterDB)
-    //await newComic[0].setPublisher(publisherrel)
-    await newComic[0].addConcepts(conceptsDB)
-
-    res.json({ Info: "Comic created right!!" });
-  } catch (error) {
-    console.log(error)
+  if (newComic) {
+    return ({ info: "Comic created right!!" });
+  } else {
+    throw new Error("could not create comic")
   }
 }
 

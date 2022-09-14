@@ -5,7 +5,7 @@ import episodesRoutes from './episodesRoutes';
 import routerConcepts from './router.concepts'
 import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
-import routerAdmin from './router.Admin';
+import routerAdmin from './router.admin';
 import routerCheckout from './checkout.routes';
 
 

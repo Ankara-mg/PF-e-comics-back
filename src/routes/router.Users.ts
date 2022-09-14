@@ -1,11 +1,21 @@
+//@ts-nocheck
 import { Router } from 'express';
-import { userSignup, userLogin,} from '../controller/controller.users';
-import { verifyToken } from '../controller/verifyToken';
+import { userSignup, userLogin, } from '../controller/controller.users';
+import { verifyToken } from '../middleware/middleware';
 
 const router = Router()
 
 
-router.post('/singup', userSignup)
+router.post('/singup', async (req, res) => {
+  const { username, email, password, } = req.body
+  try {
+    let controller = await userSignup(username, email, password)
+    res.json(controller)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+
+})
 
 router.post('/login', userLogin)
 
