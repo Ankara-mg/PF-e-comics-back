@@ -27,6 +27,12 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
         static associate(models: any) {
             Issues.belongsToMany(models.Comics, { through: 'issues_comics' })
+            Issues.belongsToMany(models.Users, {
+                through: 'favorites_list',
+                as: 'user', 
+                foreignKey: 'issuesId',
+                otherKey: 'userId'
+            })
         }
     }
 
