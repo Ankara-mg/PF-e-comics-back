@@ -9,7 +9,6 @@ router.get("/", (req, res) => {
   res.json("ok")
 })
 
-
 router.get("/users", async (req, res) => {
   try {
     let controller = await users_db()
