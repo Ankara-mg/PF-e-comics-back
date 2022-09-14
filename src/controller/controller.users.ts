@@ -4,6 +4,7 @@ import db from "../../models";
 import router from "../routes";
 require('dotenv').config()
 
+
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const secretUser = process.env.SESSION_SECRET_USER
@@ -51,11 +52,11 @@ export const userLogin = async (req: Request, res: Response) => {
         }
         if (user.rol === "ADMIN"){
             const token = jwt.sign({ id: user.id }, secretAdmin, { expiresIn: 60 * 60 * 24 })
-            res.json({ auth: true, token, Rol: "ADMIN", name: user.name })
+            res.json({ auth: true, token, Rol: "ADMIN", name: user.username })
         }
         if (user.rol === "USER"){
             const token = jwt.sign({ id: user.id }, secretUser, { expiresIn: 60 * 60 * 24 })
-            res.json({ auth: true, token,Rol: "USER", name: user.username })
+            res.json({ auth: true, token, Rol: "USER", name: user.username, id: user.id})
         }
     } catch (error) {
         console.log(error)

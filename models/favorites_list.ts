@@ -2,29 +2,30 @@
 import { Model, UUIDV4 } from 'sequelize';
 
 interface FavAttributes {
-  comicId: number;
+  issuesId: number;
   userId: string;
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
   class favorites_list extends Model<FavAttributes> implements FavAttributes { 
 
-    comicId!: number;
+    issuesId!: number;
     userId!: string;
 
     static associate(models: any) {
       // define association here
-      // favorites_list.belongsToMany(models.Comics, {through: 'favorites_comics'})
+      // // favorites_list.belongsToMany(models.Comics, {through: 'favorites_comics'})
+      // favorites_list.belongsToMany(models.Issues, {through: 'favorites_issues'})
       // favorites_list.belongsToMany(models.Users, {through: 'favorites_users'})
     }
   }
   favorites_list.init({
-    comicId: {
+    issuesId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: "Comics",
+        model: "Issues",
         key: "id"
       }
     },
@@ -39,7 +40,7 @@ module.exports = (sequelize:any, DataTypes:any) => {
     }
   }, {
     sequelize,
-    modelName: 'favorites_lists',
+    modelName: 'favorites_list',
     timestamps: false,
   });
   return favorites_list;

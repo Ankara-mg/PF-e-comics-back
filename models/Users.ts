@@ -20,12 +20,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
         static associate (models:any){
             Users.hasMany(models.Ratings)
             Users.hasMany(models.Purchases)
-            Users.belongsToMany(models.Comics, {through: 'favorites_list'})
-<<<<<<< HEAD
-            // Users.belongsToMany(models.favorites_list, {through: 'favorites_users'})
-=======
+            Users.belongsToMany(models.Issues, {
+                through: 'favorites_list',
+                as: 'issues', 
+                foreignKey: 'userId',
+                otherKey: 'issuesId'
+            })
             Users.hasMany(models.Roles)
->>>>>>> ebdcba7bff5f173b1477b42371e2c3a5c80aaebf
         }
     }
     Users.init({
@@ -39,7 +40,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
-           
+        
         },
         email: {
             type: DataTypes.STRING,
