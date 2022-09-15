@@ -39,7 +39,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     Issues.init({
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             unique: true,
             allowNull: false,
             primaryKey: true,

@@ -73,6 +73,7 @@ export const getIssues = async (id: string) => {
       let price_random = random_price(classical_year)
 
       return {
+        id: e.id,
         issue_number: e.issue_number,
         volume_id: e.volume.id,
         release: e.cover_date,
