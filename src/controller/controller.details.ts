@@ -56,7 +56,7 @@ export const getDetails = async (id: string) => {
             // console.log(api)
             let auxiliar = api.map(e => {
                 return {
-
+                    
                     name: e.name,
                     image: e.image,
                     description: e.description,

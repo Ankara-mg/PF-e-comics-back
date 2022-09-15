@@ -1,5 +1,4 @@
-import { Request, Response } from "express";
-import { verifyToken } from "../middleware/middleware";
+import e, { Request, Response } from "express";
 const { Router } = require('express')
 const Stripe = require('stripe')
 require("dotenv")
@@ -11,11 +10,14 @@ const stripe = new Stripe(STRIPE_KEY)
 router.post('/', async (req: Request, res: Response) => {
 
     try {
-        const { id, price, mailUsuario } = req.body
-    
+
+        let { id, price, carrito } = req.body
+        price = price.toFixed(2)*100
+
         //findOne(email)
         const payment = await stripe.paymentIntents.create({
-            amount: price, // Amount es el precio, no mandar como price
+            
+            amount: 123, // Amount es el precio, no mandar como price
             currency: "USD",
             description: "comic", // ACA PASARLE EL NOMBRE DEL COMIC!!
             payment_method: id,
@@ -24,7 +26,6 @@ router.post('/', async (req: Request, res: Response) => {
             //receipt_email: mailUsuario, 
             //customer: idUsuario,
         })
-    
         res.send("Disfrute de su comic :)")
     } catch (error: any) {
         res.status(418).json({error: error.raw.message})

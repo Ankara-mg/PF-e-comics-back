@@ -4,6 +4,7 @@ import db from "../../models";
 import router from "../routes";
 require('dotenv').config()
 
+
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const secretUser = process.env.SESSION_SECRET_USER
