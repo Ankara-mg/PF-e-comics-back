@@ -1,39 +1,49 @@
 //@ts-nocheck
 const { Router } = require('express');
 import { Request, Response } from "express";
-import db from "../../models";
+import { getAllRatings, addRating, getRatingsIssue, getRatingAvg } from "../controller/controller.raiting"
 
 const router = Router();
 
-router.post('/', async (req: Request, res: Response) => {
-  const {
-    rating,
-    ComicId,
-    description,
-    UserId,
-    IssueId
-  } = req.body
-  try {
-    const ratingDb = await db.Ratings.create({
-      rating: Number(rating),
-      ComicId,
-      description,
-      UserId,
-      IssueId: Number(IssueId)
-    })
-    res.status(200).send(ratingDb)
-  } catch (error) {
-    return error
-  }
-})
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const getRating = await db.Ratings.findAll()
-    res.status(200).send(getRating)
+    const controller = await getAllRatings()
+    res.status(200).json(controller)
   } catch (error) {
-    res.status(505).send("Server internal error")
+    res.status(500).json({ error: error.message })
   }
 })
+
+
+router.post('/', async (req: Request, res: Response) => {
+  try {
+    const controller = await addRating(req.body)
+    res.status(200).json(controller)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+router.post('/byIssue', async (req: Request, res: Response) => {
+  const { volumeId, IssueId } = req.body
+  try {
+    const controller = await getRatingsIssue(volumeId, IssueId)
+    res.status(200).json(controller)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+router.post('/avg', async (req: Request, res: Response) => {
+  const { volumeId, IssueId } = req.body
+  try {
+    const controller = await getRatingAvg(volumeId, IssueId)
+    res.status(200).json(controller)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
 
 export default router
