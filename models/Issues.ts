@@ -22,7 +22,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
 
 
         static associate(models: any) {
-            Issues.belongsToMany(models.Comics, { through: 'issues_comics' })
+            Issues.belongsToMany(models.Comics, { through: 'issues_comics' }),
+                Issues.hasMany(models.Ratings)
         }
     }
 
@@ -30,7 +31,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     Issues.init({
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             unique: true,
             allowNull: false,
             primaryKey: true,

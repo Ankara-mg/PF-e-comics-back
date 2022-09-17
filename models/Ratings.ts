@@ -13,12 +13,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
         rating!: number;
         description?: string;
 
-        static associate(models: any){
-            Ratings.belongsTo(models.Comics, {foreignKey: "comicId"})
-            Ratings.belongsTo(models.Users, { foreignKey: "comicId" })
+        static associate(models: any) {
+            Ratings.belongsTo(models.Comics, { foreignKey: "comicId" })
+            Ratings.belongsTo(models.Users, { foreignKey: "userId" })
+            Ratings.belongsTo(models.Issues, { foreignKey: "IssueId" })
         }
     }
-    
+
     Ratings.init({
         id: {
             type: DataTypes.UUID,
@@ -34,6 +35,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
         description: {
             type: DataTypes.TEXT,
         }
-    }, {sequelize, timestamps: false, modelName: 'Ratings'})
+    }, { sequelize, timestamps: false, modelName: 'Ratings' })
     return Ratings
 }
