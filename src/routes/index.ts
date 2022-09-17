@@ -11,7 +11,8 @@ import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
 import routerCheckout from './checkout.routes';
 import routerFavs from './routerFavorite'
-
+import { isRegularExpressionLiteral } from 'typescript';
+import routerGoogle from './authroutes'
 const config = {
     authRequired: false,
     auth0Logout: true,
@@ -36,6 +37,8 @@ const config = {
     router.use('/user', routerUsers)
     router.use('/checkout', routerCheckout)
     router.use('/fav', routerFavs)
+    router.use('/login', routerGoogle )
+    
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {

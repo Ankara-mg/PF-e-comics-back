@@ -28,20 +28,21 @@ export const verifyToken = async(req: Request, res: Response, NextFunction: any 
        NextFunction()
     
    } catch (error) {
-     
+     return error
    }
 }
 
 
 export const verifyTokenAdmin = async(req: Request, res: Response, NextFunction: any ) =>{
   try {
-      const token = req.headers['x-access-token'];
-      if(!token){
+      const tokenadm = req.get['Authorization'];
+      if(!tokenadm){
           return res.status(401).json({
               auth: false,
               message: 'no hay token'
           })
       }
+      const token = tokenadm?.replace("Bearer ", "")
       const decoded =  jwt.verify(token, secretAdmin)
       req.userId = decoded.id
       const user = await db.Users.findByPk(req.userId, {password: 0})
@@ -53,7 +54,7 @@ export const verifyTokenAdmin = async(req: Request, res: Response, NextFunction:
       NextFunction()
    
   } catch (error) {
-    console.log(error)
+    return error
   }
 }
 
