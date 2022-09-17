@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import db from "../../models";
 const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 import {Op} from 'sequelize'
+// import cloudinary from '../../config/utils'
+import cloudinary from "../../config/utils";
 
 
 //----------------------------carga los comics en la database-------------------------------------------------
@@ -127,29 +129,34 @@ export const getComicsDB = async(req: Request, res: Response) =>{
 
 
 export const postComics = async (req: Request, res: Response) => {
-    const { name, image, release, description, episodes, characters, publisher, concepts} = req.body
+    // const {  characters, concepts} = req.body
+    const {values, imagen,} = req.body
+    // console.log(values, "valuessssssss")
+    // console.log(req.body, "chaoooooo")
+
     try {
-        const exists= await db.Comics.findOne({ where: { name: name } });
+        const exists= await db.Comics.findOne({ where: { name: values.name } });
         if (exists) return res.json({ Info: "Comic already exists" });
 
         const newComic = await db.Comics.findOrCreate({
         where:{
-            name:name.charAt(0).toUpperCase() + name.slice(1),
-            description,
-            release,
-            image,
-            episodes,
-            publisher
+            // name:name.charAt(0).toUpperCase() + name.slice(1),
+            name: values.name,
+            description:values.description,
+            release: values.release,
+            image: imagen,
+            episodes: values.episodes,
+            publisher: values.publisher
         }
     }) 
 
-        let characterDB =  await db.Characters.findAll({where : {name : characters},})
-       // let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})
-        let conceptsDB =   await db.Concepts.findAll({where : {name : concepts},})
+        // let characterDB =  await db.Characters.findAll({where : {name : characters},})
+       // let publisherrel =  await db.Publishers.findOne({where : {id : publisher_Name},})             //
+        // let conceptsDB =   await db.Concepts.findAll({where : {name : concepts},})
         
-            newComic[0].addCharacters(characterDB)
-            //await newComic[0].setPublisher(publisherrel)
-            await newComic[0].addConcepts(conceptsDB)
+            // newComic[0].addCharacters(characterDB)
+            //await newComic[0].setPublisher(publisherrel)              //
+            // await newComic[0].addConcepts(conceptsDB)
 
                 res.json({ Info: "Comic created right!!"});
         } catch (error) {
