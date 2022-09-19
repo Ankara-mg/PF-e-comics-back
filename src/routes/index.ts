@@ -8,6 +8,7 @@ import routerUsers from './router.Users'
 import routerAdmin from './router.admin';
 import routerCheckout from './checkout.routes';
 import routerFavs from './routerFavorite'
+import routerRating from './router.ratings'
 
 
 const router = Router();
@@ -19,6 +20,7 @@ router.use('/concepts', routerConcepts)
 router.use('/publishers', routerPublishers)
 router.use('/user', routerUsers)
 router.use('/checkout', routerCheckout)
+router.use('/ratings', routerRating)
 router.use('/fav', routerFavs)
 router.use('/admin', routerAdmin)
 

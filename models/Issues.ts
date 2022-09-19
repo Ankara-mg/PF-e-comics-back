@@ -33,6 +33,7 @@ module.exports = (sequelize: any, DataTypes: any) => {
                 foreignKey: 'issuesId',
                 otherKey: 'userId'
             })
+            Issues.hasMany(models.Ratings)
         }
     }
 

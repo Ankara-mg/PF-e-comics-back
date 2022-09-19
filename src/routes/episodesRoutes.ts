@@ -3,6 +3,7 @@ import { getDetails } from '../controller/controller.details';
 import { getComicsDB, postComics, getAllInfo, SearchName, getIssues } from '../controller/episodesController';
 import { verifyToken } from '../middleware/middleware';
 import { Request, Response } from "express";
+import { getRatingAvg } from '../controller/controller.raiting';
 const router = Router()
 
 router.get('/', getComicsDB)
@@ -11,6 +12,17 @@ router.get('/issues/:id', async (req, res) => {
   const { id } = req.params;
   try {
     let controller_result = await getIssues(id)
+    res.json(controller_result)
+
+  } catch (error) {
+    res.status(404).json({ error })
+  }
+})
+
+router.get('/issues/rating/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    let controller_result = await getRatingAvg(Number(id))
     res.json(controller_result)
 
   } catch (error) {

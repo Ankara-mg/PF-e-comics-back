@@ -54,6 +54,10 @@ export const getIssues = async (id: string) => {
         volume_id: id,
         createInDb: true
       },
+      include: {
+        model: db.Ratings,
+        attributes: ['rating', 'userId', 'description'],
+      },
       order: [
         ['issue_number', 'ASC'],
       ]

@@ -6,7 +6,7 @@ import { verifyToken } from '../middleware/middleware';
 const router = Router()
 
 
-router.post('/singup', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { username, email, password, } = req.body
   try {
     let controller = await userSignup(username, email, password)

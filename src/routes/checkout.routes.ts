@@ -7,28 +7,29 @@ const router = Router()
 const { STRIPE_KEY } = process.env
 const stripe = new Stripe(STRIPE_KEY)
 
-router.post('/' , async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
+    let { id, price, carrito } = req.body
 
     try {
-
-        let { id, price, carrito } = req.body
-        price = price.toFixed(2)*100
+        price = price.toFixed(2) * 100
 
         //findOne(email)
         const payment = await stripe.paymentIntents.create({
-            
-            amount: 123, // Amount es el precio, no mandar como price
+
+            amount: price, // Amount es el precio, no mandar como price
             currency: "USD",
             description: "comic", // ACA PASARLE EL NOMBRE DEL COMIC!!
-            payment_method: id,
+            payment_method: "pm_card_visa",
             confirm: true,
             // El email del usuario para que reciba el detalle
             //receipt_email: mailUsuario, 
             //customer: idUsuario,
         })
-        res.send("Disfrute de su comic :)")
+        console.log(payment);
+
+        res.send(payment)
     } catch (error: any) {
-        res.status(418).json({error: error.raw.message})
+        res.status(418).json({ error: error.raw.message })
     }
 })
 
