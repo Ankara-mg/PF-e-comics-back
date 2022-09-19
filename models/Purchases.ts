@@ -1,19 +1,28 @@
-import { DataTypes, UUIDV1, Model, Sequelize } from 'sequelize'
+import { DataTypes, UUIDV4, Model, Sequelize } from 'sequelize'
 
 interface PurchasesAttributes {
     id: string;
     totalPrice: number;
-    amount: number;
+    paymentMethod?: string;
+    status: string;
+    buyDate?: string;
 }
 
 module.exports = (sequelize:any, DataTypes:any) => {
     class Purchases extends Model implements PurchasesAttributes {
         id!: string;
         totalPrice!: number;
-        amount!: number;
+        paymentMethod?: string;
+        status!: string;
+        buyDate?: string;
 
         static associate(models: any){
-            Purchases.belongsToMany(models.Comics, {through: 'purchase_comics'})
+            Purchases.belongsToMany(models.Issues, {
+                through: 'purchase_comics',
+                as: 'issues',
+                foreignKey: 'purchaseId',
+                otherKey: 'issueId',
+            })
             Purchases.belongsTo(models.Users, {foreignKey: "userId"})
         }
     }
@@ -21,19 +30,29 @@ module.exports = (sequelize:any, DataTypes:any) => {
     Purchases.init({
         id: {
             type: DataTypes.UUID,
-            defaultValue: UUIDV1,
+            defaultValue: UUIDV4,
             unique: true,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
         },
         totalPrice: {
             type: DataTypes.FLOAT,
             allowNull: false,
         },
-        amount: {
-            type: DataTypes.INTEGER,
+        paymentMethod: {
+            type: DataTypes.ENUM("Tarjeta de Credito", "Tarjeta de Debito"),
+            allowNull: true
+        },
+        status: {
+            type: DataTypes.ENUM("En Carrito", "Creado", "Procesando", "Completo"),
+            defaultValue: "En Carrito",
             allowNull: false,
-        }
+        },
+        buyDate: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NOW,
+            allowNull: true,
+        },
     }, {sequelize, timestamps: false, modelName: 'Purchases'})
     
     return Purchases   

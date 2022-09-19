@@ -6,7 +6,6 @@ require("dotenv")
 const router = Router()
 const { STRIPE_KEY } = process.env
 const stripe = new Stripe(STRIPE_KEY)
-console.log(STRIPE_KEY)
  
 router.post('/' , async (req: Request, res: Response) => {
 

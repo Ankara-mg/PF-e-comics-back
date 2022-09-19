@@ -10,6 +10,7 @@ import routerConcepts from './router.concepts'
 import routerPublishers from './router.publishers'
 import routerUsers from './router.Users'
 import routerCheckout from './checkout.routes';
+import routerCart from './router.purchase';
 import routerFavs from './routerFavorite'
 
 const config = {
@@ -35,6 +36,7 @@ const config = {
     router.use('/publishers', routerPublishers)
     router.use('/user', routerUsers)
     router.use('/shop/checkout', routerCheckout)
+    router.use('/shop/cart', routerCart)
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
