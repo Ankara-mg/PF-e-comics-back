@@ -9,36 +9,57 @@ import { Op } from 'sequelize'
 //----------------------------carga los comics en la database-------------------------------------------------
 
 export const getComics = async () => {
-  try {
-    const com = await db.Comics.findAll()
-    if (!com.length) {
-      const comics: (object)[] = []
-      let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=100`
+  const comics_db = await db.Comics.findAll()
+  if (!comics_db.length) {
+    let listSeries = `https://comicvine.gamespot.com/api/volumes/?api_key=${apiKey}&format=json&limit=100`
 
-      let dataList = await axios.get(listSeries)
+    let comics = await axios.get(listSeries).then(response => response.data);
+    let format_results = comics.results.map((e: any) => (
+      {
+        name: e.name,
+        id: e.id,
+        image: e.image.original_url,
+        description: e.description,
+        release: e.date_added.slice(0, 10),
+        episodes: e.count_of_issues,
+        createInDb: false,
+        publisher: e.publisher.name,
+        deck: e.deck,
+      }
+    ))
 
-      dataList.data.results.map(async (e: any) => {
-        //const issues = await axios.get(e.api_detail_url)
-
-        return comics.push({
-          name: e.name,
-          id: e.id,
-          image: e.image.original_url,
-          description: e.description,
-          release: e.date_added.slice(0, 10),
-          episodes: e.count_of_issues,
-          createInDb: false,
-          publisher: e.publisher.name,
-          deck: e.deck,
-
-        })
-      })
-      await db.Comics.bulkCreate(comics)
-    }
-  } catch (error) {
-    console.log(error)
+    await db.Comics.bulkCreate(format_results)
+    return { msg: "Comics Creados en db" }
   }
+  return comics_db
 }
+
+export const addComic_db = async (id) => {
+  const comics_db = await db.Comics.findAll({
+    where: { id }
+  })
+  if (comics_db.length > 0) return { msg: "Comic en db" }
+
+  let listSeries = `https://comicvine.gamespot.com/api/volume/4050-${id}?api_key=${apiKey}&format=json&limit=100`
+
+  let comic = await axios.get(listSeries).then(response => response.data);
+  const { name, image, description, date_added, count_of_issues, publisher, deck } = comic.results
+  let results = {
+    name,
+    id,
+    image: image.original_url,
+    description: description,
+    release: date_added.slice(0, 10),
+    episodes: count_of_issues,
+    createInDb: true,
+    publisher: publisher.name,
+    deck: deck,
+  }
+
+  const newComic = await db.Comics.create(results)
+  return { msg: "Comic agregado a db", comic: newComic }
+}
+
 
 //-----------------------------------------------------------------------------------------------------
 const random_price = (clasical: number): number => {
@@ -56,7 +77,7 @@ export const getIssues = async (id: string) => {
       },
       include: {
         model: db.Ratings,
-        attributes: ['rating', 'userId', 'description'],
+        attributes: ['rating', 'UserId', 'description'],
       },
       order: [
         ['issue_number', 'ASC'],
@@ -89,6 +110,7 @@ export const getIssues = async (id: string) => {
     })
 
     // console.log("issues from api", format_results.length);
+    await addComic_db(id)
     await db.Issues.bulkCreate(format_results)
     return format_results
 

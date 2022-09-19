@@ -14,9 +14,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
         description?: string;
 
         static associate(models: any) {
-            Ratings.belongsTo(models.Comics, { foreignKey: "comicId" })
-            Ratings.belongsTo(models.Users, { foreignKey: "userId" })
-            Ratings.belongsTo(models.Issues, { foreignKey: "IssueId" })
+            Ratings.belongsTo(models.Comics)
+            Ratings.belongsTo(models.Users)
+            Ratings.belongsTo(models.Issues)
         }
     }
 

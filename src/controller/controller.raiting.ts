@@ -13,16 +13,15 @@ export const getAllRatings = async () => {
 }
 
 export const addRating = async (body: any) => {
-  const { rating, description, userId, IssueId, comicId } = body
+  const { rating, description, UserId, ComicId, IssueId } = body
 
   const newRating = await db.Ratings.create({
-    rating: Number(rating),
+    rating,
     description,
-    comicId,
-    userId,
-    IssueId: IssueId
+    UserId,
+    ComicId,
+    IssueId
   })
-
 
   if (newRating) {
     return newRating

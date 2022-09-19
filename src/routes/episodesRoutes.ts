@@ -1,9 +1,8 @@
 import { Router } from 'express';
 import { getDetails } from '../controller/controller.details';
-import { getComicsDB, postComics, getAllInfo, SearchName, getIssues } from '../controller/episodesController';
-import { verifyToken } from '../middleware/middleware';
-import { Request, Response } from "express";
+import { getComicsDB, postComics, SearchName, getIssues, addComic_db } from '../controller/episodesController';
 import { getRatingAvg } from '../controller/controller.raiting';
+;
 const router = Router()
 
 router.get('/', getComicsDB)
@@ -14,8 +13,8 @@ router.get('/issues/:id', async (req, res) => {
     let controller_result = await getIssues(id)
     res.json(controller_result)
 
-  } catch (error) {
-    res.status(404).json({ error })
+  } catch (error: any) {
+    res.status(404).json({ error: error.message })
   }
 })
 
@@ -25,8 +24,8 @@ router.get('/issues/rating/:id', async (req, res) => {
     let controller_result = await getRatingAvg(Number(id))
     res.json(controller_result)
 
-  } catch (error) {
-    res.status(404).json({ error })
+  } catch (error: any) {
+    res.status(404).json({ error: error.message })
   }
 })
 
@@ -36,8 +35,18 @@ router.get('/search', async (req, res) => {
   try {
     let controller_result = await SearchName(name)
     res.json(controller_result)
-  } catch (error) {
-    res.status(404).json(error)
+  } catch (error: any) {
+    res.status(404).json({ error: error.message })
+  }
+})
+
+router.get('/addComic_db/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    let controller_result = await addComic_db(id)
+    res.json(controller_result)
+  } catch (error: any) {
+    res.status(404).json({ error: error.message })
   }
 })
 
@@ -46,8 +55,8 @@ router.get('/:id', async (req, res) => {
   try {
     let controller_result = await getDetails(id)
     res.json(controller_result)
-  } catch (error) {
-    res.status(404).json(error)
+  } catch (error: any) {
+    res.status(404).json({ error: error.message })
   }
 })
 
@@ -60,8 +69,5 @@ router.post('/', async (req, res) => {
   }
 
 })
-
-// router.get('/sign-up', loggin)
-
 
 export default router;
