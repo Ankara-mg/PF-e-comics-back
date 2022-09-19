@@ -3,13 +3,6 @@ import routes from './src/routes/index'
 const morgan = require('morgan');
 //import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-// import { dotenv } from "dotenv";
-require ('dotenv').config()
-
-
-//----------
-
-//import morgan from 'morgan';
 import cors from 'cors'
 
 const app = express();

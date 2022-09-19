@@ -26,16 +26,16 @@ module.exports = (sequelize: any, DataTypes: any) => {
             defaultValue: UUIDV1,
             unique: true,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+
         },
         rating: {
             type: DataTypes.INTEGER,
-            allowNull: true,
+            allowNull: false,
             validate: {
                 max: 5,                  // only allow values <= 23
                 min: 0,
-            },
-            defaultValue: 0
+            }
         },
         description: {
             type: DataTypes.TEXT,

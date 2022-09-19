@@ -9,8 +9,6 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const secretUser = process.env.SESSION_SECRET_USER
 const secretAdmin = process.env.SESSION_SECRET_ADMIN
-console.log(secretUser);
-
 //---------------------------------http://localhost:3000/user/singup---------------------------------------------------
 
 export const userSignup = async (username, email, password) => {

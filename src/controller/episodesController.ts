@@ -63,9 +63,9 @@ export const addComic_db = async (id) => {
 
 //-----------------------------------------------------------------------------------------------------
 const random_price = (clasical: number): number => {
-  let factor_classic = clasical ? clasical : 50
-  let factor_price = 1 / (factor_classic * 2)
-  return (Math.random() / factor_price)
+    let factor_classic = clasical ? clasical : 50
+    let factor_price = 1 / (factor_classic * 2)
+    return (Math.random() / factor_price)
 }
 
 export const getIssues = async (id: string) => {

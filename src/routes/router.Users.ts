@@ -11,7 +11,7 @@ router.post('/signup', async (req, res) => {
   try {
     let controller = await userSignup(username, email, password)
     res.json(controller)
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({ error: error.message })
   }
 
