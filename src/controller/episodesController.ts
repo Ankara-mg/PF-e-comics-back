@@ -63,9 +63,9 @@ export const addComic_db = async (id) => {
 
 //-----------------------------------------------------------------------------------------------------
 const random_price = (clasical: number): number => {
-    let factor_classic = clasical ? clasical : 50
-    let factor_price = 1 / (factor_classic * 2)
-    return (Math.random() / factor_price)
+  let factor_classic = clasical ? clasical : 50
+  let factor_price = 1 / (factor_classic * 2)
+  return (Math.random() / factor_price)
 }
 
 export const getIssues = async (id: string) => {
@@ -155,7 +155,7 @@ export const getComicsDB = async (req: Request, res: Response) => {
 
 
 export const postComics = async (data) => {
-  const { name, image, release, description, episodes, publisher, } = data
+  const { name, image, release, description, episodes, publisher,start_year } = data
   const exists = await db.Comics.findOne({ where: { name: name } });
   if (exists) return ({ error: "Comic already exists" });
 
@@ -166,12 +166,13 @@ export const postComics = async (data) => {
       release,
       image,
       episodes,
-      publisher
+      publisher,
+      start_year
     }
   )
 
   if (newComic) {
-    return ({ info: "Comic created right!!" });
+    return ({ info: "Comic created right!!", comic: newComic });
   } else {
     throw new Error("could not create comic")
   }

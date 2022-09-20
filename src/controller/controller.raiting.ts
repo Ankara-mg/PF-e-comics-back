@@ -48,7 +48,7 @@ export const removeRating = async (id_review: string) => {
 export const getRatingsIssue = async (volumeId: number, IssueId: number) => {
   const ratings_issue = await db.Ratings.findAll({
     where: {
-      comicId: volumeId,
+      ComicId: volumeId,
       IssueId: IssueId,
     },
     include: {
