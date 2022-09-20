@@ -24,7 +24,6 @@ export const userSignup = async (username, email, password) => {
         password: await bcrypt.hash(password, n_salt),
         rol: "USER"
     })
-
     if (newUser) {
         return { msg: "Nuevo usuario registrado", newUser }
     } else {
@@ -43,7 +42,7 @@ export const userLogin = async (req: Request, res: Response) => {
             }
         })
         if (!user) {
-            return res.status(404).send("El email no esta registrado");
+            return res.status(404).send("Email o contraseña incorrecta");
         }
         const validatePassword = await bcrypt.compare(password, user.password)
         if (!validatePassword) {
@@ -99,7 +98,7 @@ export const loginGoogle = async(req: Request, res: Response, next: NextFunction
             }
         })
         const token = jwt.sign({ id: user2.id }, secretUser, { expiresIn: 60 * 60 * 24 })
-        res.json({ auth: true, token, Rol: "USER", name: user2.username, id: user2.id})
+        res.json({ auth: true, token, Rol: "USER", name: user2.username, id: user2.id, email: user2.email})
     } catch (error) {
         console.log(error)
     }
