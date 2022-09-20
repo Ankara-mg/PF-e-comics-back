@@ -103,7 +103,7 @@ export const loginGoogle = async(req: Request, res: Response, next: NextFunction
             }
         })
         const token = jwt.sign({ id: user2.id }, secretUser, { expiresIn: 60 * 60 * 24 })
-        res.json({ auth: true, token, Rol: "USER", name: user2.username, id: user2.id})
+        res.json({ auth: true, token, Rol: "USER", name: user2.username, id: user2.id, email: user2.email})
     } catch (error) {
         console.log(error)
     }
