@@ -13,7 +13,7 @@ module.exports = {
   "test": {
     "username": "root",
     "password": null,
-    "database": "ecomics",
+    "database": "railway",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },

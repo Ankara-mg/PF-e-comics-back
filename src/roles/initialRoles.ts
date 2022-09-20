@@ -4,7 +4,7 @@ export const createRoles = async () => {
     try {
 
       const countRoles = await db.Roles.count();
-      // console.log(countRoles)
+
       if (countRoles > 0) return;
 
       const values = await Promise.all([
@@ -12,7 +12,6 @@ export const createRoles = async () => {
          db.Roles.create({ name: "admin" }),
       ]);
   
-      // console.log(values);
     } catch (error) {
       console.error(error);
     }
