@@ -78,12 +78,12 @@ router.get('/:userId', async(req: Request, res: Response) => {
     let { userId } = req.params
 
     try {    
-        console.log("REQ PARAMS", userId)
         userId = userId.replace(/['"]+/g, '');
 
         let compras = await db.Purchases.findAll({
             where: {
                 userId: userId,
+                status: "En Carrito",
             },
             include: {
                 model: db.Issues,
@@ -99,8 +99,6 @@ router.get('/:userId', async(req: Request, res: Response) => {
         compras.forEach((element:any) => {
             issuesIds.push(element.toJSON().issues[0].id)
         });
-
-        console.log(issuesIds, "COMPRAS ARRAY")
         
         let issuesEnCarrito:any = []
 
@@ -117,6 +115,47 @@ router.get('/:userId', async(req: Request, res: Response) => {
         res.status(200).json(issuesEnCarrito) 
     } catch (error) {
         res.status(404).json({message: "No hay compras"})
+    }
+})
+
+router.put('/', async(req: Request, res: Response) => {
+    const { comic, card, status } = req.body;
+    let { userId } = req.body
+    userId = userId.replace(/['"]+/g, '');
+    try {
+        const issueId = await db.purchase_comics.findAll({
+            where: {
+                issueId: comic.id,
+            },  
+                attributes: ["purchaseId"]
+        })
+
+        let purchasesId:any = []
+
+        issueId.map((e:any) => purchasesId.push(e.toJSON().purchaseId))
+
+        for(let i = 0 ; i < purchasesId.length ; i++){
+            const purchase = await db.Purchases.findOne({
+                where: {
+                    id: purchasesId[i],
+                    userId: userId,
+                    status: "En Carrito"
+                }
+            })
+
+            if(purchase){
+                const change = await purchase.update({
+                    where: {
+                        id: purchasesId[0],
+                        userId: userId,
+                    },
+                    status: status,
+                    paymentMethod: card == "credit" ? "Credit Card" : "Debit Card"
+                })
+            }
+        }
+    } catch (error) {
+        console.log(error)
     }
 })
 
