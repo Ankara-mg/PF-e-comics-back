@@ -12,7 +12,8 @@ import routerUsers from './router.Users'
 import routerCheckout from './checkout.routes';
 import routerCart from './router.purchase';
 import routerFavs from './routerFavorite'
-
+import { isRegularExpressionLiteral } from 'typescript';
+import routerGoogle from './authroutes'
 const config = {
     authRequired: false,
     auth0Logout: true,
@@ -37,6 +38,8 @@ const config = {
     router.use('/user', routerUsers)
     router.use('/shop/checkout', routerCheckout)
     router.use('/shop/cart', routerCart)
+    router.use('/fav', routerFavs)
+    router.use('/login', routerGoogle )
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
