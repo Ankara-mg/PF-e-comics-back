@@ -7,13 +7,16 @@ module.exports = {
     "port": 5432,
     "database": "ecomics",
     "dialect": "postgres",
-    "password": "alejo10913",
+<<<<<<< HEAD
+    "password": "123456789",
+=======
+>>>>>>> a215c21339a9aab05fe80858c53b6a27a7028cd6
     "logging": false
   },
   "test": {
     "username": "root",
     "password": null,
-    "database": "ecomics",
+    "database": "railway",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
@@ -25,3 +28,4 @@ module.exports = {
     "dialect": "postgres"
   }
 }
+

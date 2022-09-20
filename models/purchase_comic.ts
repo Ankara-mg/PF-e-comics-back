@@ -4,7 +4,7 @@ import {
 } from 'sequelize';
 
 interface PurchaseComicAttributes {
-  comicId: number;
+  issueId: number;
   purchaseId: string;
 }
 
@@ -12,19 +12,19 @@ interface PurchaseComicAttributes {
 module.exports = (sequelize:any, DataTypes:any) => {
   class purchase_comic extends Model<PurchaseComicAttributes> implements PurchaseComicAttributes { 
 
-    comicId!: number;
+    issueId!: number;
     purchaseId!: string;
     static associate(models: any) {
       // define association here
     }
   }
   purchase_comic.init({
-    comicId: {
+    issueId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: "Comics",
+        model: "Issues",
         key: "id"
       }
     },

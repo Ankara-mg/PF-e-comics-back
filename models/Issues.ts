@@ -7,6 +7,8 @@ interface IssuesAttributes {
     name: string
     price: number;
     image: string;
+    release: string;
+    description: string;
     createInDb: boolean;
 }
 
@@ -18,25 +20,31 @@ module.exports = (sequelize: any, DataTypes: any) => {
         name!: string;
         price!: number;
         image!: string;
+        release!: string;
+        description!: string;
         createInDb!: boolean;
 
 
         static associate(models: any) {
-            Issues.belongsToMany(models.Comics, { through: 'issues_comics' })
+            Issues.belongsToMany(models.Purchases, { 
+                through: 'purchase_comics',
+                as: 'purchase',
+                foreignKey: 'issuesId',
+                otherKey: 'purchaseId',
+            })
             Issues.belongsToMany(models.Users, {
                 through: 'favorites_list',
                 as: 'user', 
                 foreignKey: 'issuesId',
                 otherKey: 'userId'
             })
+            Issues.hasMany(models.Ratings)
         }
     }
-
 
     Issues.init({
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             unique: true,
             allowNull: false,
             primaryKey: true,
@@ -54,7 +62,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
         price: {
             type: DataTypes.FLOAT,
         },
+        release: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        description: {
             type: DataTypes.STRING,
             allowNull: true,
         },
