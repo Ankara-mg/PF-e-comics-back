@@ -129,10 +129,10 @@ export const getComicsDB = async(req: Request, res: Response) =>{
 
 
 export const postComics = async (req: Request, res: Response) => {
-    // const {  characters, concepts} = req.body
-    const {values, imagen,} = req.body
+    // const {  characters, concepts, name, description, release, image, episodes, publisher} = req.body
+    const {values, imagen,characters, concepts} = req.body
     // console.log(values, "valuessssssss")
-    // console.log(req.body, "chaoooooo")
+    console.log(req.body, "chaoooooo")
 
     try {
         const exists= await db.Comics.findOne({ where: { name: values.name } });

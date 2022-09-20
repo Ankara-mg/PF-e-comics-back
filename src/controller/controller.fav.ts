@@ -34,11 +34,11 @@ export const postFavs = async (req: Request, res: Response) => {
         let findUser = await db.Users.findOne({
             where: {id : userId}
         })
-        console.log(findUser, "line 37")
+        // console.log(findUser, "line 37")
         let findIssue = await db.Issues.findOne({
             where: {id : issuesId}
         })
-        console.log(findIssue, "line 41")
+        // console.log(findIssue, "line 41")
         await findIssue.addUser(findUser)
         // await findUser.addIssue(findIssue)
     
