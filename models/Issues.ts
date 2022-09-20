@@ -7,6 +7,8 @@ interface IssuesAttributes {
     name: string
     price: number;
     image: string;
+    release: string;
+    description: string;
     createInDb: boolean;
 }
 
@@ -18,6 +20,8 @@ module.exports = (sequelize: any, DataTypes: any) => {
         name!: string;
         price!: number;
         image!: string;
+        release!: string;
+        description!: string;
         createInDb!: boolean;
 
 
@@ -34,14 +38,13 @@ module.exports = (sequelize: any, DataTypes: any) => {
                 foreignKey: 'issuesId',
                 otherKey: 'userId'
             })
+            Issues.hasMany(models.Ratings)
         }
     }
-
 
     Issues.init({
         id: {
             type: DataTypes.INTEGER,
-            autoIncrement: true,
             unique: true,
             allowNull: false,
             primaryKey: true,
@@ -59,7 +62,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
         price: {
             type: DataTypes.FLOAT,
         },
+        release: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
         name: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
+        description: {
             type: DataTypes.STRING,
             allowNull: true,
         },

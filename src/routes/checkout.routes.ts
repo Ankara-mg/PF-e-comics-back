@@ -24,9 +24,11 @@ router.post('/' , async (req: Request, res: Response) => {
             //receipt_email: mailUsuario, 
             //customer: idUsuario,
         })
-        res.send("Disfrute de su comic :)")
+        console.log(payment);
+
+        res.send(payment)
     } catch (error: any) {
-        res.status(418).json({error: error.raw.message})
+        res.status(418).json({ error: error.raw.message })
     }
 })
 

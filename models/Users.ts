@@ -5,8 +5,10 @@ interface UserAttributes {
     id: string;
     username: string;
     email: string;
+    password: string;
+    rol: string;
+    active: boolean;
     address?: string;
-    password:string;
 }
 
 module.exports = (sequelize: any, DataTypes: any) => {
@@ -14,15 +16,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
         id!: string;
         username!: string;
         email!: string;
-        address?: string;
         password!: string;
+        rol!: string;
+        active!: boolean;
+        address?: string;
 
-        static associate (models:any){
+        static associate(models: any) {
             Users.hasMany(models.Ratings)
             Users.hasMany(models.Purchases)
             Users.belongsToMany(models.Issues, {
                 through: 'favorites_list',
-                as: 'issues', 
+                as: 'issues',
                 foreignKey: 'userId',
                 otherKey: 'issuesId'
             })
@@ -40,12 +44,17 @@ module.exports = (sequelize: any, DataTypes: any) => {
         username: {
             type: DataTypes.STRING,
             allowNull: false,
-        
+
         },
         email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
+            validate: {
+                isEmail: {
+                    msg: "Must be a valid email address",
+                }
+            }
         },
         password: {
             type: DataTypes.STRING,
@@ -54,10 +63,15 @@ module.exports = (sequelize: any, DataTypes: any) => {
         },
         rol: {
             type: DataTypes.STRING,
-            allowNull: false 
+            allowNull: false
+        },
+        active: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
 
-    },{sequelize, timestamps: true, modelName: 'Users'})
+
+    }, { sequelize, timestamps: true, modelName: 'Users' })
 
     return Users
 
