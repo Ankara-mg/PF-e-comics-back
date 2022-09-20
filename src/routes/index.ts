@@ -40,6 +40,7 @@ const config = {
     router.use('/shop/cart', routerCart)
     router.use('/fav', routerFavs)
     router.use('/login', routerGoogle )
+    
     //router.use('/issues', issuesRoutes)
 
     // router.get('/sign-up', (req: any, res: { oidc: { login: (arg0: { authorizationParams: { screen_hint: string; }; }) => void; }; }) => {
