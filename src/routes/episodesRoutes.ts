@@ -7,7 +7,9 @@ const router = Router()
 
 router.get('/', getComicsDB)
 
-router.get('/issues/:id', async (req, res) => {
+
+
+router.get('/issues/:id',  async (req, res) => {
   const { id } = req.params;
   try {
     let controller_result = await getIssues(id)
@@ -60,13 +62,16 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-router.post('/', async (req, res) => {
-  try {
-    let controller = await postComics(req.body)
-    res.json(controller)
-  } catch (error: any) {
-    res.status(500).json({ error: error.message })
-  }
+
+//router.post('/', async (req, res) => {
+  //try {
+    //let controller = await postComics(req.body)
+    //res.json(controller)
+  //} catch (error: any) {
+    //res.status(500).json({ error: error.message })
+  //}
+
+router.post('/' , postComics)
 
 })
 
