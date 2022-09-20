@@ -32,7 +32,7 @@ export const userSignup = async (req: Request, res: Response) => {
     res.status(200).send({ auth: true, token })
             ;
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 
@@ -47,7 +47,7 @@ export const userLogin = async (req: Request, res: Response) => {
             }
         })
         if (!user) {
-            return res.status(404).send("El email no esta registrado");
+            return res.status(404).send("Email o contraseña incorrecta");
         }
         const validatePassword = await bcrypt.compare(password, user.password)
         if (!validatePassword) {
