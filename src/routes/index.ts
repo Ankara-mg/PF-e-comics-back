@@ -38,7 +38,6 @@ const config = {
     router.use('/user', routerUsers)
     router.use('/shop/checkout', routerCheckout)
     router.use('/shop/cart', routerCart)
-    router.use('/checkout', routerCheckout)
     router.use('/fav', routerFavs)
     router.use('/login', routerGoogle )
     

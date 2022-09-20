@@ -40,11 +40,11 @@ module.exports = (sequelize:any, DataTypes:any) => {
             allowNull: false,
         },
         paymentMethod: {
-            type: DataTypes.ENUM("Tarjeta de Credito", "Tarjeta de Debito"),
+            type: DataTypes.ENUM("Credit Card", "Debit Card"),
             allowNull: true
         },
         status: {
-            type: DataTypes.ENUM("En Carrito", "Creado", "Procesando", "Completo"),
+            type: DataTypes.ENUM("En Carrito", "Procesando", "Completo"),
             defaultValue: "En Carrito",
             allowNull: false,
         },
