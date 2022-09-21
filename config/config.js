@@ -7,6 +7,7 @@ module.exports ={
     "port": 7152,
     "database": "railway",
     "dialect": "postgres",
+    "logging": false
     "password" : "x1t4CW54M7AEv3zK2WAC" 
   },
   "test": {
@@ -24,3 +25,4 @@ module.exports ={
     "dialect": "postgres"
   }
 }
+

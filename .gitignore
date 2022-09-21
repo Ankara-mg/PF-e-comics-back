@@ -5,3 +5,4 @@ tsconfig.json
 seeders
 migrations
 package-lock.json
+config.js
