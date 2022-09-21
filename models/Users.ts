@@ -1,5 +1,4 @@
 import { DataTypes, UUIDV4, Model, Sequelize } from 'sequelize'
-import sequelize from '../dist/database/db';
 
 interface UserAttributes {
     id: string;
