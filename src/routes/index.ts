@@ -10,6 +10,7 @@ import routerCheckout from './checkout.routes';
 import routerCart from './router.purchase';
 import routerFavs from './routerFavorite'
 import routerRating from './router.ratings'
+import routerGoogle from './authroutes';
 
 
 
@@ -23,7 +24,7 @@ router.use('/publishers', routerPublishers)
 router.use('/user', routerUsers)
 router.use('/shop/checkout', routerCheckout)
 router.use('/shop/cart', routerCart)
-//router.use('/login', routerGoogle )
+router.use('/login', routerGoogle )
 router.use('/ratings', routerRating)
 router.use('/fav', routerFavs)
 router.use('/admin', routerAdmin)
