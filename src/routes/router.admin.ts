@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { Router } from 'express';
-import { users_db, setActiveUser, setRolUser } from '../controller/controller.admin';
+import { users_db, setActiveUser, setRolUser } from '../controller/Controller.admin';
 import { getAllRatings, removeRating } from '../controller/controller.raiting';
 import { sendMailService } from '../controller/controller.mailing';
 
