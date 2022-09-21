@@ -1,4 +1,4 @@
-require('dotenv').config();  
+require('dotenv').config();
 
 module.exports ={
   "development": {
@@ -8,6 +8,7 @@ module.exports ={
     "database": "railway",
     "dialect": "postgres",
     "password" : "OKRXjHvsA608KEbTlMw8" 
+    //"logging": false
   },
   "test": {
     "username": "root",
@@ -24,3 +25,4 @@ module.exports ={
     "dialect": "postgres"
   }
 }
+
