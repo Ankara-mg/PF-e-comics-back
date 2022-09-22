@@ -17,7 +17,6 @@ router.get('/', async (req: Request, res: Response) => {
 
 
 router.post('/', async (req: Request, res: Response) => {
-  console.log(req.body);
   
   try {
     const controller = await addRating(req.body)

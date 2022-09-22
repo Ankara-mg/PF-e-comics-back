@@ -75,7 +75,6 @@ router.delete("/reviews", async (req, res) => {
 
 router.post("/sendEmail", async (req, res) => {
   const { email } = req.body
-  console.log(email);
   
   try {
     let controller = await sendMailService(email)

@@ -72,10 +72,8 @@ export const addComic_db = async (id) => {
 
 
 //-----------------------------------------------------------------------------------------------------
-const random_price = (clasical: number): number => {
-  let factor_classic = clasical ? clasical : 50
-  let factor_price = 1 / (factor_classic * 2)
-  return (Math.random() / factor_price)
+const random_price = (max: number, min: number): number => {
+  return Math.random() * (max - min) + min
 }
 
 export const getIssues = async (id: string) => {
@@ -104,8 +102,8 @@ export const getIssues = async (id: string) => {
     let data = await axios.get(`${apiURL}`).then(response => response.data);
     let format_results = data.results.map((e: any) => {
 
-      let classical_year = Number(`${e.cover_date}`.split("-")[0])
-      let price_random = random_price(classical_year)
+      //let classical_year = Number(`${e.cover_date}`.split("-")[0])
+      let price_random = random_price(15, 100)
 
       return {
         id: e.id,
@@ -168,7 +166,6 @@ export const postComics = async (req: Request, res: Response) => {
     // const {  characters, concepts, name, description, release, image, episodes, publisher} = req.body
     const {values, imagen,characters, concepts} = req.body
     // console.log(values, "valuessssssss")
-    console.log(req.body, "chaoooooo")
 
     try {
         const exists= await db.Comics.findOne({ where: { name: values.name } });

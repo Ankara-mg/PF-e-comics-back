@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
 
 router.post('/', (req: any, res: any) => {
 
-  console.log(req.body)
 })
 
 

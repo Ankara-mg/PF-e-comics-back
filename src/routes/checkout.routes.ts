@@ -16,7 +16,7 @@ router.post('/' , async (req: Request, res: Response) => {
         //findOne(email)
         const payment = await stripe.paymentIntents.create({
             amount: price, // Amount es el precio, no mandar como price
-            currency: "COP",
+            currency: "USD",
             description: "comic", 
             payment_method: id,
             confirm: true,
@@ -24,7 +24,6 @@ router.post('/' , async (req: Request, res: Response) => {
             //receipt_email: mailUsuario, 
             //customer: idUsuario,
         })
-        console.log(payment);
 
         res.send(payment)
     } catch (error: any) {
