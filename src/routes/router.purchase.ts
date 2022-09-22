@@ -73,9 +73,9 @@ router.delete('/', async(req: Request, res: Response) => {
     res.status(200).send("borrado del carrito")
 })
 
-router.get('/:userId', async(req: Request, res: Response) => {
+router.get('/:userId/:comprado', async(req: Request, res: Response) => {
 
-    let { userId } = req.params
+    let { userId, comprado } = req.params
 
     try {    
         userId = userId.replace(/['"]+/g, '');
@@ -83,7 +83,7 @@ router.get('/:userId', async(req: Request, res: Response) => {
         let compras = await db.Purchases.findAll({
             where: {
                 userId: userId,
-                status: "En Carrito",
+                status: comprado == "carrito" ? "En Carrito" : "Completo"
             },
             include: {
                 model: db.Issues,
