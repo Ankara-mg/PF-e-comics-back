@@ -132,7 +132,7 @@ router.put('/', async(req: Request, res: Response) => {
 
         let purchasesId:any = []
 
-        if(purchasesId){
+        if(issueId.length > 0){
             issueId.map((e:any) => purchasesId.push(e.toJSON().purchaseId))
             for(let i = 0 ; i < purchasesId.length ; i++){
                 const purchase = await db.Purchases.findOne({
