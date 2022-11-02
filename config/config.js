@@ -1,13 +1,14 @@
-require('dotenv').config();  
+require('dotenv').config();
 
 module.exports ={
   "development": {
     "username": "postgres",
-    "host": "containers-us-west-34.railway.app",
-    "port": 6533,
+    "host": "containers-us-west-52.railway.app",
+    "port": 6658,
     "database": "railway",
     "dialect": "postgres",
-    "password" : "InkJ2AcR3c2CwKTBKLgy" 
+    "password" : "OKRXjHvsA608KEbTlMw8" 
+    //"logging": false
   },
   "test": {
     "username": "root",
@@ -24,3 +25,4 @@ module.exports ={
     "dialect": "postgres"
   }
 }
+
