@@ -4,7 +4,8 @@ import { Request, Response } from "express";
 import db from "../../models";
 import axios from 'axios';
 import { findAll } from "../../dist/models/Characters";
-const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
+require('dotenv').config();
+const apiKey = process.env.API_KEY
 
 export const getCharacters = async () => {
     try {

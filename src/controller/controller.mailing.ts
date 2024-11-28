@@ -3,7 +3,6 @@ require('dotenv').config();
 // import axios from "axios"
 // import db from "../../models";
 // import { Op } from 'sequelize'
-// const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 const { transporter } = require("../../config/mail.js")
 
 console.log("TRANSPORTER,", transporter)

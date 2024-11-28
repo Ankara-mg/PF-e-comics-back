@@ -2,11 +2,12 @@
 import axios from "axios"
 import { Request, Response } from "express";
 import db from "../../models";
-const apiKey = '49e9caca6b1b3b836f076299d5a84df4e9ab60a1'
 import {Op} from 'sequelize'
 // import cloudinary from '../../config/utils'
 //import cloudinary from "../../config/utils";
 
+require('dotenv').config();
+const apiKey = process.env.API_KEY
 
 //----------------------------carga los comics en la database-------------------------------------------------
 
