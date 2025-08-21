@@ -10,7 +10,7 @@ import cors from 'cors'
 
 const app = express();
 //cors:
-app.use(cors({ origin: 'https://e-comics.vercel.app' }))
+app.use(cors({ origin: process.env.FRONT_URL }))
 //midlewares:
 
 //----------
@@ -24,7 +24,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 app.use(morgan('dev'));
 app.use((req: any, res: any, next: any) => {
-  res.header('Access-Control-Allow-Origin', 'https://e-comics.vercel.app'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Origin', process.env.FRONT_URL);
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
