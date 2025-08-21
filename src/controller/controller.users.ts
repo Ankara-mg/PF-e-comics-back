@@ -4,7 +4,7 @@ import db from "../../models";
 import router from "../routes";
 require('dotenv').config()
 import { OAuth2Client  } from "google-auth-library";
-import { User } from "oidc-client";
+// import { User } from "oidc-client";
 import { ClientRequest } from "http";
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -78,10 +78,10 @@ export const userLogin = async (req: Request, res: Response) => {
 export const loginGoogle = async(req: Request, res: Response, next: NextFunction) =>{
     try {
         const {google} = req.body
-        const authClient = new OAuth2Client("73480857070-b1pmolqom7futp18ta7mjgf3naq9lk27.apps.googleusercontent.com") 
+        const authClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID) 
         const client = await authClient.verifyIdToken({
             idToken: google, 
-            audience: "73480857070-b1pmolqom7futp18ta7mjgf3naq9lk27.apps.googleusercontent.com"
+            audience: process.env.GOOGLE_CLIENT_ID
         }) 
         
         const user = await db.Users.findOrCreate({

@@ -1,12 +1,17 @@
 import e, { Request, Response } from "express";
 const { Router } = require('express')
-const Stripe = require('stripe')
+// const Stripe = require('stripe')
+const Stripe = require("stripe").default
 require("dotenv")
 
 const router = Router()
 const { STRIPE_KEY } = process.env
-const stripe = new Stripe(STRIPE_KEY)
- 
+// const stripe = new Stripe(STRIPE_KEY)
+
+const stripe = new Stripe({
+  apiKey: STRIPE_KEY,
+})
+
 router.post('/' , async (req: Request, res: Response) => {
 
     try {        
