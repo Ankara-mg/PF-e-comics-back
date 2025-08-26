@@ -1,5 +1,7 @@
 import db from "./models";
 import app from "./app";
+import dotenv from "dotenv";
+dotenv.config();
 
 import { getPublishers } from './src/controller/controller.publishers'
 import { getComics } from "./src/controller/episodesController";
