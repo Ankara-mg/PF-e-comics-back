@@ -47,14 +47,17 @@ export const userLogin = async (req: Request, res: Response) => {
         const validatePassword = await bcrypt.compare(password, user.password)
         if (!validatePassword) {
             res.status(401).json({ auth: false, token: null, message: "contraseña incorrecta" })
+            return;
         }
         if (user.rol === "ADMIN") {
             const token = jwt.sign({ id: user.id }, secretAdmin, { expiresIn: 60 * 60 * 24 })
             res.json({ auth: true, token, Rol: "ADMIN", name: user.username })
+            return;
         }
         if (user.rol === "USER") {
             const token = jwt.sign({ id: user.id }, secretUser, { expiresIn: 60 * 60 * 24 })
             res.json({ auth: true, token, Rol: "USER", name: user.username, id: user.id, email: user.email })
+            return;
         }
     } catch (error) {
         console.log(error)
