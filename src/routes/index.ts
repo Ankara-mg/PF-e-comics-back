@@ -1,5 +1,5 @@
-const { Router } = require('express');
-require('dotenv').config()
+import { Router } from 'express';
+
 import routesCharacter from './router.characters'
 import episodesRoutes from './episodesRoutes';
 import routerConcepts from './router.concepts'
