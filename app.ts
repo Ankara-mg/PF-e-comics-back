@@ -10,9 +10,19 @@ app.use(cors({
   credentials: true
 }));
 
+app.options('*', cors({
+  origin: process.env.FRONT_URL,
+  credentials: true
+}));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(morgan('dev'));
+
+app.use((req, _res, next) => {
+  console.log("METHOD", req.method, "ORIGIN", req.headers.origin);
+  next();
+});
 
 app.use('/', routes)
 
