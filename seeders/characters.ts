@@ -1,7 +1,7 @@
-export const characters ={
-    // {
-    //     id: string,
-    //     name: string,
+import { getCharacters } from "../src/controller/controller.characters";
 
-    // }
-}
+const seedCharacters = async () => {
+  await getCharacters();
+};
+
+export { seedCharacters };
