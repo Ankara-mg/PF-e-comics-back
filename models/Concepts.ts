@@ -1,39 +1,46 @@
-import { DataTypes, UUIDV1, Model, Sequelize } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize';
+import { sequelize } from './index';
 
-interface ConceptsAttributes {
-    id: number;
-    name: string;
-    description: string;
-}
+interface ConceptAttributes {
+  id: number;
+  name: string;
+  description: string;
+};
 
-module.exports = (sequelize: any, DataTypes: any) => {
-    class Concepts extends Model implements ConceptsAttributes {
-        id!: number;
-        name!: string;
-        description!: string;
+interface ConceptCreationAttributes extends Optional<ConceptAttributes, 'id'> { };
 
-        static associate (models:any){
-            Concepts.belongsToMany(models.Comics, {through: 'concept_comics'})
+class Concept extends Model<ConceptAttributes, ConceptCreationAttributes> implements ConceptAttributes {
+  id!: number;
+  name!: string;
+  description!: string;
 
-            // Concepts.belongsToMany(models.Comics, {through: 'concept_comic', foreignKey: {name: "conceptId"}})
-        }
-    }
-    Concepts.init({
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            unique: true,
-            allowNull: false,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        description: {
-            type: DataTypes.TEXT,
-            allowNull: true,
-        }
-    }, {sequelize, timestamps: false, modelName: 'Concepts'})
-    return Concepts
-}
+  static associate(models: any) {
+    Concept.belongsToMany(models.Comic, { through: 'concept_comic' });
+  };
+};
+
+Concept.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      unique: true,
+      allowNull: false,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    timestamps: false,
+  },
+);
+
+export { Concept };

@@ -1,48 +1,48 @@
-import { DataTypes, UUIDV1, Model, Sequelize, STRING } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize';
+import { sequelize } from './index';
 
 interface ComicAttributes {
   id: number;
   name: string;
   image?: string;
   description?: string;
-  deck?: string,
+  deck?: string;
   release: string;
   episodes: number;
-  createInDb: boolean;
+  created_in_db: boolean;
   start_year: string;
-}
+};
 
-module.exports = (sequelize: any, DataTypes: any) => {
-  class Comics extends Model implements ComicAttributes {
-    id!: number;
-    name!: string;
-    image?: string;
-    description?: string;
-    release!: string;
-    episodes!: number;
-    createInDb!: boolean;
-    deck?: string;
-    start_year!: string;
-    //api_detail_url!: string
+interface ComicCreationAttributes extends Optional<ComicAttributes, 'id'> { };
 
-    static associate(models: any) {
-      Comics.belongsToMany(models.Characters, { through: 'character_comic' })
-      Comics.belongsToMany(models.Concepts, { through: 'concept_comic' })
-      Comics.belongsToMany(models.Purchases, { through: 'purchase_comic' })
-      Comics.belongsToMany(models.Users, { through: 'favorites_list' })
-      //Comics.belongsTo(models.Publishers, { foreignKey: "publisher_Name"})
-      Comics.hasMany(models.Ratings)
+class Comic extends Model<ComicAttributes, ComicCreationAttributes> implements ComicAttributes {
+  id!: number;
+  name!: string;
+  image?: string;
+  description?: string;
+  deck?: string;
+  release!: string;
+  episodes!: number;
+  created_in_db!: boolean;
+  start_year!: string;
 
-      // Comics.belongsToMany(models.favorites_list, {through: 'favorites_comics'})
-    }
-  }
-  Comics.init({
+  static associate(models: any) {
+    Comic.belongsToMany(models.Character, { through: 'character_comic' });
+    Comic.belongsToMany(models.Concept, { through: 'concept_comic' });
+    Comic.belongsToMany(models.Purchase, { through: 'purchase_comic' });
+    Comic.belongsToMany(models.User, { through: 'favorites_list' });
+    Comic.hasMany(models.Rating);
+  };
+};
+
+Comic.init(
+  {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       unique: true,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -56,48 +56,30 @@ module.exports = (sequelize: any, DataTypes: any) => {
     },
     release: {
       type: DataTypes.DATEONLY,
-      defaultValue: sequelize.literal("CURRENT_TIMESTAMP")
+      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     episodes: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    publisher: {
-      type: DataTypes.STRING,
-
-    },
-    api_url_detail: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      defaultValue: 0,
     },
     deck: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
     start_year: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
     },
-    createInDb: {
+    created_in_db: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
     },
-    // stock: {
-    //   type: DataTypes.INTEGER,
-    //   defaultValue: 100
-    // }
-    // characters: {
-    //   type: DataTypes.ARRAY(DataTypes.STRING)
-    // },
-    // issues: {
-    //   type: DataTypes.JSON(DataTypes.STRING)
-
-    // }
-  }, {
+  },
+  {
     sequelize,
     timestamps: true,
-    modelName: "Comics"
-  })
-  return Comics
-}
+  },
+);
+
+export { Comic };

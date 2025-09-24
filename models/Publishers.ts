@@ -1,44 +1,52 @@
-import { DataTypes, UUIDV1, Model, Sequelize } from 'sequelize'
+import { DataTypes, Model, Optional } from 'sequelize';
+import { sequelize } from './index';
 
 interface PublisherAttributes {
-    id: string;
-    name: string;
-    image: string;
-    city?: string;
-}
+  id: string;
+  name: string;
+  image: string;
+  city?: string;
+};
 
-module.exports = (sequelize: any, DataTypes: any) => {
-    class Publishers extends Model implements PublisherAttributes {
-        id!: string;
-        name!: string;
-        image!: string;
-        city?: string;
+interface PublisherCreationAttributes extends Optional<PublisherAttributes, 'id'> { };
 
-        // static associate(models:any){
-        //     Publishers.hasMany(models.Comics, { as: "Comics" })
-        // }
-    }
-    
-    Publishers.init({
-        id: {
-            type: DataTypes.STRING,
-            // autoIncrement: true,
-            unique: true,
-            allowNull: false,
-            primaryKey: true
-        },
-        name: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        image: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        city: {
-            type: DataTypes.STRING,
-            //allowNull: false,
-        }
-    }, {sequelize, timestamps: false, modelName: 'Publishers'})
-    return Publishers;
-}
+class Publisher extends Model<PublisherAttributes, PublisherCreationAttributes> implements PublisherAttributes {
+  id!: string;
+  name!: string;
+  image!: string;
+  city?: string;
+
+  static associate(models: any) {
+    Publisher.hasMany(models.Comic);
+    models.Comic.belongsTo(Publisher, { foreignKey: 'publisher_id', as: 'publisher' });
+  };
+};
+
+Publisher.init(
+  {
+    id: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      primaryKey: true,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+  },
+  {
+    sequelize,
+    timestamps: false
+  },
+);
+
+export { Publisher };
