@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
 import { sequelize } from './index';
 
 interface PublisherAttributes {
@@ -29,6 +29,7 @@ Publisher.init(
       unique: true,
       allowNull: false,
       primaryKey: true,
+      defaultValue: UUIDV4,
     },
     name: {
       type: DataTypes.STRING,

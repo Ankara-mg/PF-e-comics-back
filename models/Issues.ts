@@ -1,5 +1,6 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { BelongsToManyAddAssociationMixin, DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from './index';
+import { User } from './Users';
 
 interface IssueAttributes {
   id: number;
@@ -25,6 +26,8 @@ class Issue extends Model<IssueAttributes, IssueCreationAttributes> implements I
   release!: string;
   description!: string;
   created_in_db!: boolean;
+
+  public addUser!: BelongsToManyAddAssociationMixin<User, string>;
 
   static associate(models: any) {
     Issue.belongsToMany(models.Purchase, {

@@ -2,12 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
+import { DatabaseType } from '@custom-types/database';
 
 dotenv.config();
 const basename = path.basename(__filename);
 const { PGUSER, PGPASSWORD, PGDATABASE, PGHOST, PGPORT } = process.env;
 
-const db: any = {};
+const db: DatabaseType = {} as DatabaseType;
 
 export const sequelize = new Sequelize(PGDATABASE!, PGUSER!, PGPASSWORD!, {
   host: PGHOST,
@@ -24,12 +25,12 @@ fs
   .forEach((file: any) => {
     const imported = require(path.join(__dirname, file));
     const model = imported.default || Object.values(imported)[0];
-    db[model.name] = model;
+    (db as any)[model.name] = model;
   });
 
 Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+  if ((db as any)[modelName].associate) {
+    (db as any)[modelName].associate(db);
   }
 });
 

@@ -1,4 +1,5 @@
 import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
+import { IssueType } from '@custom-types/database';
 import { sequelize } from './index';
 
 interface UserAttributes {
@@ -6,7 +7,7 @@ interface UserAttributes {
   username: string;
   email: string;
   password: string;
-  role: string;
+  role?: 'user' | 'admin';
   active: boolean;
   address?: string;
 };
@@ -18,9 +19,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   username!: string;
   email!: string;
   password!: string;
-  role!: string;
+  role?: 'user' | 'admin';
   active!: boolean;
   address?: string;
+  issues?: IssueType[];
 
   static associate(models: any) {
     User.hasMany(models.Rating);
@@ -57,8 +59,8 @@ User.init(
       allowNull: false,
     },
     role: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.ENUM('user', 'admin'),
+      defaultValue: 'user',
     },
     active: {
       type: DataTypes.BOOLEAN,

@@ -5,6 +5,9 @@ interface RatingAttributes {
   id: string;
   rating: number;
   description?: string;
+  user_id: string;
+  comic_id: number;
+  issue_id: number;
 };
 
 interface RatingCreationAttributes extends Optional<RatingAttributes, 'id'> { };
@@ -13,6 +16,9 @@ class Rating extends Model<RatingAttributes, RatingCreationAttributes> implement
   id!: string;
   rating!: number;
   description?: string;
+  user_id!: string;
+  comic_id!: number;
+  issue_id!: number;
 
   static associate(models: any) {
     Rating.belongsTo(models.Comic);
@@ -34,12 +40,36 @@ Rating.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        max: 5, // only allow values <= 23
+        max: 5,
         min: 0,
       },
     },
     description: {
       type: DataTypes.TEXT,
+    },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+    },
+    comic_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'comics',
+        key: 'id',
+      },
+    },
+    issue_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'issues',
+        key: 'id',
+      },
     },
   },
   {
