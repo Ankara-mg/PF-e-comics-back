@@ -1,7 +1,7 @@
-import { getConcepts } from "../src/controller/controller.concepts";
+import { fetchConceptsApi } from '../src/services/concepts';
 
 const seedConcepts = async () => {
-  await getConcepts();
+  await fetchConceptsApi();
 };
 
 export { seedConcepts };

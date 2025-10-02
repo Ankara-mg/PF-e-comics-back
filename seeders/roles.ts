@@ -1,7 +1,15 @@
-import { createRoles } from "../src/roles/initialRoles";
+import db from '../models';
 
 const seedRoles = async () => {
-  await createRoles();
+  try {
+    await Promise.all([
+      db.Role.create({ name: 'user' }),
+      db.Role.create({ name: 'admin' }),
+    ]);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  };
 };
 
 export { seedRoles };

@@ -1,7 +1,7 @@
-import { getComics } from "../src/controller/episodesController";
+import { fetchComicsApi } from '../src/services/comics';
 
 const seedComics = async () => {
-  await getComics();
+  await fetchComicsApi();
 };
 
 export { seedComics };

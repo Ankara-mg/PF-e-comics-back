@@ -1,10 +1,10 @@
-import db from "../models";
+import db from '../models';
 
-import { seedPublishers } from "./publishers";
-import { seedComics } from "./comics";
-import { seedConcepts } from "./concepts";
-import { seedCharacters } from "./characters";
-import { seedRoles } from "./roles";
+import { seedPublishers } from './publishers';
+import { seedComics } from './comics';
+import { seedConcepts } from './concepts';
+import { seedCharacters } from './characters';
+import { seedRoles } from './roles';
 
 async function populateDatabase() {
   try {
@@ -19,9 +19,9 @@ async function populateDatabase() {
     ]);
 
     await db.sequelize.close();
-    console.log("Database populated successfully!");
+    console.log('Database populated successfully!');
   } catch (error) {
-    console.error("Failed to populate the database: ", error);
+    console.error('Failed to populate the database: ', error);
     process.exit(1);
   };
 };

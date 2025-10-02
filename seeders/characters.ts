@@ -1,7 +1,7 @@
-import { getCharacters } from "../src/controller/controller.characters";
+import { fetchCharactersApi } from '../src/services/characters';
 
 const seedCharacters = async () => {
-  await getCharacters();
+  await fetchCharactersApi();
 };
 
 export { seedCharacters };

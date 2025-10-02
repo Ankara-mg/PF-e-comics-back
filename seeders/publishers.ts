@@ -1,7 +1,7 @@
-import { getPublishers } from '../src/controller/controller.publishers';
+import { fetchPublishersApi } from '../src/services/publishers';
 
 const seedPublishers = async () => {
-  await getPublishers();
+  await fetchPublishersApi();
 };
 
 export { seedPublishers };
