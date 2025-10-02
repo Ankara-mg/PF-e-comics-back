@@ -17,7 +17,7 @@ export const getAllUsers = async () => {
 };
 
 
-export const setUserRole = async (id_user: number, role: 'admin' | 'user') => {
+export const setUserRole = async (id_user: string, role: 'admin' | 'user') => {
   try {
     const [changedUsers, newUser]: [number, UserAttributes[]] = await db.User.update({ role }, {
       where: { id: id_user },
@@ -34,7 +34,7 @@ export const setUserRole = async (id_user: number, role: 'admin' | 'user') => {
   };
 };
 
-export const setActiveUser = async (id_user: number, active: boolean) => {
+export const setActiveUser = async (id_user: string, active: boolean) => {
   try {
     const [changedUsers, newUser]: [number, UserAttributes[]] = await db.User.update({ active }, {
       where: { id: id_user },

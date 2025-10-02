@@ -1,5 +1,7 @@
-import { DataTypes, Model, Optional, UUIDV4 } from 'sequelize';
+import { DataTypes, Model, Optional, UUIDV4, BelongsToManyAddAssociationMixin } from 'sequelize';
 import { sequelize } from './index';
+import { User } from './Users';
+import { Issue } from './Issues';
 
 interface PurchaseAttributes {
   id: string;
@@ -7,6 +9,7 @@ interface PurchaseAttributes {
   payment_method?: string;
   status: string;
   buy_date?: string;
+  user_id?: string;
 }
 
 interface PurchaseCreationAttributes extends Optional<PurchaseAttributes, 'id'> { };
@@ -17,10 +20,16 @@ class Purchase extends Model<PurchaseAttributes, PurchaseCreationAttributes> imp
   payment_method?: string;
   status!: string;
   buy_date?: string;
+  user_id?: string;
+
+  public addIssues!: BelongsToManyAddAssociationMixin<Issue, string>;
+  public removeIssue!: BelongsToManyAddAssociationMixin<Issue, string>;
+  public setUser!: BelongsToManyAddAssociationMixin<User, string>;
+  public issues?: Issue[];
 
   static associate(models: any) {
     Purchase.belongsToMany(models.Issue, { through: 'purchase_comics', as: 'issues', foreignKey: 'purchaseId', otherKey: 'issueId', });
-    Purchase.belongsTo(models.User, { foreignKey: 'userId' });
+    Purchase.belongsTo(models.User, { foreignKey: 'user_id' });
   };
 };
 

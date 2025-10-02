@@ -15,18 +15,30 @@ export const getComics = async () => {
   };
 };
 
+export const getDetails = async (comic_id: number) => {
+  try {
+    const comic: ComicAttributes | null = await db.Comic.findOne({ where: { id: comic_id } });
+
+    return comic || {} as ComicAttributes;
+  } catch (error: any) {
+    console.error('Database error.');
+    throw new Error(error.message || 'Database error.');
+  };
+};
+
 export const addComicToDb = async (comic_id: number) => {
   try {
     const newComic = await fetchComicDetail(comic_id);
     await db.Comic.create(newComic);
-    return { msg: 'Comic added to the database.', comic: newComic };
+
+    return newComic;
   } catch (error: any) {
     console.error(error.message);
     throw error;
   };
 };
 
-export const getIssues = async (comic_id: string) => {
+export const getIssues = async (comic_id: number) => {
   try {
     const issuesList = await db.Issue.findAll({
       where: {
@@ -70,7 +82,7 @@ export const createComic = async (comicData: ComicAttributes) => {
 export const searchComic = async (name: string) => {
   try {
     const foundComics = await db.Comic.findAll({
-      where: {name: { [Op.iLike]: `%${name}%`}},
+      where: { name: { [Op.iLike]: `%${name}%` } },
     });
 
     return foundComics;
