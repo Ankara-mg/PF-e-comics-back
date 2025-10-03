@@ -51,7 +51,7 @@ Rating.init(
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'users',
+        model: 'Users',
         key: 'id',
       },
     },
@@ -59,7 +59,7 @@ Rating.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'comics',
+        model: 'Comics',
         key: 'id',
       },
     },
@@ -67,7 +67,7 @@ Rating.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'issues',
+        model: 'Issues',
         key: 'id',
       },
     },

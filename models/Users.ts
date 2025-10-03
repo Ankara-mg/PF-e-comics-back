@@ -28,7 +28,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
     User.hasMany(models.Rating);
     User.hasMany(models.Purchase);
     User.hasMany(models.Role);
-    User.belongsToMany(models.Issue, { through: 'favorites_list', as: 'issue', foreignKey: 'userId', otherKey: 'issueId' });
+    User.belongsToMany(models.Issue, { through: 'favorite_list', as: 'issue', foreignKey: 'user_id', otherKey: 'issue_id' });
   }
 }
 User.init(

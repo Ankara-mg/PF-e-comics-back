@@ -20,7 +20,7 @@ FavoriteList.init(
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'issues',
+        model: 'Issues',
         key: 'id',
       },
     },
@@ -29,7 +29,7 @@ FavoriteList.init(
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'users',
+        model: 'Users',
         key: 'id',
       },
     },

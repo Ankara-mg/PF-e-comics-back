@@ -29,8 +29,8 @@ class Comic extends Model<ComicAttributes, ComicCreationAttributes> implements C
   static associate(models: any) {
     Comic.belongsToMany(models.Character, { through: 'character_comic' });
     Comic.belongsToMany(models.Concept, { through: 'concept_comic' });
-    Comic.belongsToMany(models.Purchase, { through: 'purchase_comic' });
-    Comic.belongsToMany(models.User, { through: 'favorites_list' });
+    Comic.belongsToMany(models.Purchase, { through: 'purchase_comics' });
+    Comic.belongsToMany(models.User, { through: 'favorite_list' });
     Comic.hasMany(models.Rating);
   };
 };

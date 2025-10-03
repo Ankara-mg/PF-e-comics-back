@@ -31,7 +31,7 @@ class Issue extends Model<IssueAttributes, IssueCreationAttributes> implements I
 
   static associate(models: any) {
     Issue.belongsToMany(models.Purchase, {
-      through: 'purchase_comic',
+      through: 'purchase_comics',
       as: 'purchase',
       foreignKey: 'issue_id',
       otherKey: 'purchase_id',

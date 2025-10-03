@@ -28,7 +28,7 @@ class Purchase extends Model<PurchaseAttributes, PurchaseCreationAttributes> imp
   public issues?: Issue[];
 
   static associate(models: any) {
-    Purchase.belongsToMany(models.Issue, { through: 'purchase_comics', as: 'issues', foreignKey: 'purchaseId', otherKey: 'issueId', });
+    Purchase.belongsToMany(models.Issue, { through: 'purchase_comics', as: 'issues', foreignKey: 'purchase_id', otherKey: 'issue_id', });
     Purchase.belongsTo(models.User, { foreignKey: 'user_id' });
   };
 };
