@@ -11,6 +11,7 @@ interface ComicAttributes {
   episodes: number;
   created_in_db: boolean;
   start_year: string;
+  publisher_id?: string;
 };
 
 interface ComicCreationAttributes extends Optional<ComicAttributes, 'id'> { };
@@ -25,12 +26,14 @@ class Comic extends Model<ComicAttributes, ComicCreationAttributes> implements C
   episodes!: number;
   created_in_db!: boolean;
   start_year!: string;
+  publisher_id?: string;
 
   static associate(models: any) {
     Comic.belongsToMany(models.Character, { through: 'character_comic' });
     Comic.belongsToMany(models.Concept, { through: 'concept_comic' });
     Comic.belongsToMany(models.Purchase, { through: 'purchase_comics' });
     Comic.belongsToMany(models.User, { through: 'favorite_list' });
+    Comic.belongsTo(models.Publisher, { foreignKey: 'publisher_id' });
     Comic.hasMany(models.Rating);
   };
 };
@@ -75,6 +78,13 @@ Comic.init(
       allowNull: false,
       defaultValue: true,
     },
+    publisher_id: {
+      type: DataTypes.STRING,
+      references: {
+        model: 'Publishers',
+        key: 'id',
+      }
+    }
   },
   {
     sequelize,

@@ -17,8 +17,7 @@ class Publisher extends Model<PublisherAttributes, PublisherCreationAttributes> 
   city?: string;
 
   static associate(models: any) {
-    Publisher.hasMany(models.Comic);
-    models.Comic.belongsTo(Publisher, { foreignKey: 'publisher_id', as: 'publisher' });
+    Publisher.hasMany(models.Comic, { foreignKey: 'publisher_id' });
   };
 };
 
