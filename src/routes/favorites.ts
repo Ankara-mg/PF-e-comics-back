@@ -26,7 +26,7 @@ favoriteRoutes.post('/:user_id', async (req: Request, res: Response) => {
   };
 });
 
-favoriteRoutes.delete('/', async (req: Request, res: Response) => {
+favoriteRoutes.delete('/:user_id', async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { issue_id } = req.body;
 
