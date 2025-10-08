@@ -80,17 +80,6 @@ The backend will run at `http://localhost:PORT`. Example route: `http://localhos
 - **GET**
   - `/characters` -> Returns a list of comic book characters.
 
-**Comics:**
-- **GET**
-  - `/comics` -> Returns a list of all the comics in the database.
-  - `/comics/:comic_id` -> Returns a single comic.
-  - `/comics/:comic_id/issues` -> Returns a list of issues for a comic.
-  - `/comics/:comic_id/issues/:issue_id/ratings` -> Returns the ratings for a specific issue.
-  - `/comics/search?comic_name=<comic_name>` -> Returns a list of comics with the query name.
-- **POST**
-  - `/comics` -> Adds a new comic.
-  - `/comics/import/:comic_id` -> Adds a comic to the database from the public API.
-
 **Concepts:**
 - **GET**
   - `/concepts` -> Returns a list of concepts.
@@ -99,38 +88,32 @@ The backend will run at `http://localhost:PORT`. Example route: `http://localhos
 - **GET**
   - `/publishers` -> Returns a list of publishers.
 
+**Comics:**
+- **GET**
+  - `/comics` -> Returns a list of all the comics in the database.
+  - `/comics/:comic_id` -> Returns a single comic.
+  - `/comics/:comic_id/issues` -> Returns a list of issues for a comic.
+  - `/comics/:comic_id/issues/:issue_id/ratings` -> Returns the ratings for a specific issue.
+  - `/comics/:comic_id/issues/:issue_id/ratings/average` -> Returns an average score for a specific issue.
+  - `/comics/search?name=<comic_name>` -> Returns a list of comics with the query name.
+- **POST**
+  - `/comics` -> Adds a new comic.
+  - `/comics/import/:comic_id` -> Adds a comic to the database from the public API.
+  - `/comics/:comic_id/issues/:issue_id/ratings` -> Adds a new rating to a specific comic issue.
+
+**Users:**
+- **GET**
+  - `/users/:user_id/favorite-list` -> Returns the user's favorites.
+- **POST**
+  - `/users/:user_id/favorite-list` -> Adds a new favorite comic to a user.
+- **DELETE**
+  - `/users/:user_id/favorite-list` -> Removes a comic from the user's favorite list.
+
 **Auth:**
 - **POST**
   - `/auth/signup` -> Registers a new user.
   - `/auth/login/google` -> Logs in an user through Google.
   - `/auth/login` -> Logs in an user via credentials.
-
-**Ratings:**
-- **GET**
-  - `/ratings` -> Returns all the ratings for all comics.
-  - `/ratings/:comic_id/issues/:issue_id` -> Returns all the reviews for a specific comic issue.
-  - `/ratings/:issue_id/average` -> Returns an average score for a specific issue.
-- **POST**
-  - `/ratings/:comic_id/issues/:issue_id` -> Adds a new review to a specific comic issue.
-
-**Favorite List:**
-- **GET**
-  - `/favorite-list/:user_id` -> Returns the user's favorites.
-- **POST**
-  - `/favorite-list/:user_id` -> Adds a new favorite comic to a user.
-- **DELETE**
-  - `/favorite-list/:user_id` -> Removes a comic from the user's favorite list.
-
-**Admin:**
-- **GET**
-  - `/admin/user-list` -> Returns a list of users.
-- **POST**
-  - `/admin/send-email` -> Sends an email confirming the user's purchase.
-- **PUT**
-  - `/admin/user-list/:user_id/role` -> Sets the user's role.
-  - `/admin/user-list/:user_id/active` -> Activate or deactivates an user.
-- **DELETE**
-  - `/admin/reviews/:review_id` -> Removes a review.
 
 **Shop:**
 - **GET**
@@ -141,6 +124,17 @@ The backend will run at `http://localhost:PORT`. Example route: `http://localhos
 - **DELETE**
   - `/shop/:user_id/cart` -> Removes an issue from the user's shopping cart.
 
+**Admin:**
+- **GET**
+  - `/admin/user-list` -> Returns a list of users.
+  - `/admin/ratings` -> Returns a list of all the ratings for all comics.
+- **POST**
+  - `/admin/send-email` -> Sends an email confirming the user's purchase.
+- **PUT**
+  - `/admin/user-list/:user_id/role` -> Sets the user's role.
+  - `/admin/user-list/:user_id/active` -> Activate or deactivates an user.
+- **DELETE**
+  - `/admin/ratings/:rating_id` -> Removes a rating.
 ---
 
 ### **7. Environment Variables**

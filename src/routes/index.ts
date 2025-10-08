@@ -5,8 +5,7 @@ import comicsRoutes from './comics';
 import conceptRoutes from './concepts';
 import publisherRoutes from './publishers';
 import authRoutes from './auth';
-import ratingRoutes from './ratings';
-import favoriteRoutes from './favorites';
+import userRoutes from './users';
 import adminRoutes from './admin';
 import paymentRoutes from './checkout';
 
@@ -17,8 +16,7 @@ router.use('/comics', comicsRoutes);
 router.use('/concepts', conceptRoutes);
 router.use('/publishers', publisherRoutes);
 router.use('/auth', authRoutes);
-router.use('/ratings', ratingRoutes);
-router.use('/favorite-list', favoriteRoutes);
+router.use('/users', userRoutes);
 router.use('/admin', adminRoutes);
 router.use('/shop', paymentRoutes);
 

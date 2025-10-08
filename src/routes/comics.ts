@@ -2,12 +2,13 @@ import { Request, Response, Router } from 'express';
 
 import { ComicAttributes } from '@custom-types/comics';
 import { IssueAttributes } from '@custom-types/issues';
-import { RatingAttributes } from '@custom-types/rating';
 
+import ratingRoutes from './ratings';
 import { addComicToDb, createComic, getComics, getIssues, searchComic, getDetails } from '../controller/comicController';
-import { getIssueRatings } from '../controller/ratingController';
 
 const comicsRoutes = Router();
+
+comicsRoutes.use('/:comic_id/issues/:issue_id/ratings', ratingRoutes);
 
 comicsRoutes.get('/', async (_req: Request, res: Response) => {
   try {
@@ -50,21 +51,11 @@ comicsRoutes.get('/:comic_id/issues', async (req: Request<{ comic_id: string }>,
   };
 });
 
-comicsRoutes.get('/:comic_id/issues/:issue_id/ratings', async (req: Request<{comic_id: string, issue_id: string}>, res: Response) => {
-  const { comic_id, issue_id} = req.params;
-  try {
-    const averageRating: RatingAttributes[] = await getIssueRatings(Number(comic_id), Number(issue_id)); 
-    res.status(200).send(averageRating);
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  };
-});
-
 comicsRoutes.get('/search', async (req: Request, res: Response) => {
-  const { comic_name } = req.query as {comic_name: string};
+  const { name } = req.query as {name: string};
 
   try {
-    const foundComic: ComicAttributes[] = await searchComic(comic_name);
+    const foundComic: ComicAttributes[] = await searchComic(name);
     res.status(200).send(foundComic);
   } catch (error: any) {
     res.status(500).json({ error: error.message });

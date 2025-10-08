@@ -1,8 +1,11 @@
 import { Router, Request, Response } from 'express';
-import { getAllUsers, setActiveUser, setUserRole } from '../controller/adminController';
-import { removeRating } from '../controller/ratingController';
-import { sendEmail } from '../controller/mailingController';
+
 import { UserAttributes } from '@custom-types/user';
+import { RatingAttributes } from '@custom-types/rating';
+
+import { getAllUsers, setActiveUser, setUserRole } from '../controller/adminController';
+import { getAllRatings, removeRating } from '../controller/ratingController';
+import { sendEmail } from '../controller/mailingController';
 
 const adminRoutes = Router();
 
@@ -39,11 +42,20 @@ adminRoutes.put('/user-list/:user_id/active', async (req: Request, res: Response
   };
 });
 
-adminRoutes.delete('/reviews/:review_id', async (req: Request, res: Response) => {
-  const { review_id } = req.params;
+adminRoutes.get('/ratings', async (_req: Request, res: Response) => {
+  try {
+    const allRatings: RatingAttributes[] = await getAllRatings();
+    res.status(200).send(allRatings);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  };
+});
+
+adminRoutes.delete('/ratings/:rating_id', async (req: Request, res: Response) => {
+  const { rating_id } = req.params;
 
   try {
-    const deletedMsg = await removeRating(review_id);
+    const deletedMsg = await removeRating(rating_id);
     res.status(200).send({ msg: deletedMsg });
   } catch (error: any) {
     res.status(500).json({ error: error.message });

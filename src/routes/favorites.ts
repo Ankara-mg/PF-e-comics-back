@@ -1,9 +1,9 @@
 import { Request, Response, Router } from 'express';
 import { addNewFavorite, getFavoriteList, removeFavorite } from '../controller/favoriteListController';
 
-const favoriteRoutes = Router();
+const favoriteRoutes = Router({ mergeParams: true });
 
-favoriteRoutes.get('/:user_id', async (req: Request, res: Response) => {
+favoriteRoutes.get('/', async (req: Request, res: Response) => {
   const { user_id } = req.params;
 
   try {
@@ -14,7 +14,7 @@ favoriteRoutes.get('/:user_id', async (req: Request, res: Response) => {
   };
 });
 
-favoriteRoutes.post('/:user_id', async (req: Request, res: Response) => {
+favoriteRoutes.post('/', async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { issue_id } = req.body;
 
@@ -26,7 +26,7 @@ favoriteRoutes.post('/:user_id', async (req: Request, res: Response) => {
   };
 });
 
-favoriteRoutes.delete('/:user_id', async (req: Request, res: Response) => {
+favoriteRoutes.delete('/', async (req: Request, res: Response) => {
   const { user_id } = req.params;
   const { issue_id } = req.body;
 

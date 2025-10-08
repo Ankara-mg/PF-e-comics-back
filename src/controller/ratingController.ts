@@ -26,9 +26,9 @@ export const addRating = async (rating: number, description: string, user_id: st
   };
 };
 
-export const removeRating = async (review_id: string) => {
+export const removeRating = async (rating_id: string) => {
   try {
-    await db.Rating.destroy({ where: { id: review_id } });
+    await db.Rating.destroy({ where: { id: rating_id } });
     return 'Rating removed successfully.';
   } catch (error: any) {
     throw new Error(error.message || 'Error removing the rating.');
@@ -51,13 +51,13 @@ export const getIssueRatings = async (comic_id: number, issue_id: number) => {
   };
 };
 
-export const getRatingAvg = async (volume_id: number) => {
+export const getRatingAvg = async (comic_id: number, issue_id: number) => {
   try {
     const avgRatings = await db.Rating.findAll({
       group: ['issueId'],
       include: {
         model: db.Issue,
-        where: { volume_id },
+        where: { issue_id, comic_id },
         attributes: [],
       },
       attributes: [
