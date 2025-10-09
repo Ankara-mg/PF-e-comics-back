@@ -42,7 +42,7 @@ export const getIssues = async (comic_id: number) => {
   try {
     const issuesList = await db.Issue.findAll({
       where: {
-        volume_id: comic_id,
+        comic_id,
         created_in_db: true,
       },
       include: {

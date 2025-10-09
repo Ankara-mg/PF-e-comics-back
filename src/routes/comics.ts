@@ -34,7 +34,7 @@ comicsRoutes.get('/:comic_id', async (req: Request<{ comic_id: string }>, res: R
   const { comic_id } = req.params;
   try {
     const comicDetails: ComicAttributes = await getDetails(Number(comic_id));
-    res.status(500).send(comicDetails);
+    res.status(200).send(comicDetails);
   } catch (error: any) {
     res.status(500).json({ error: error.message })
   };

@@ -5,7 +5,7 @@ import { User } from './Users';
 interface IssueAttributes {
   id: number;
   issue_number: number;
-  volume_id: number;
+  comic_id: number;
   name: string;
   price: number;
   image: string;
@@ -19,7 +19,7 @@ interface IssueCreationAttributes extends Optional<IssueAttributes, 'id'> { };
 class Issue extends Model<IssueAttributes, IssueCreationAttributes> implements IssueAttributes {
   id!: number;
   issue_number!: number;
-  volume_id!: number;
+  comic_id!: number;
   name!: string;
   price!: number;
   image!: string;
@@ -59,7 +59,7 @@ Issue.init(
       allowNull: true,
       unique: 'compositeIndex',
     },
-    volume_id: {
+    comic_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: 'compositeIndex',

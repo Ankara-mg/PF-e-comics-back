@@ -23,7 +23,7 @@ adminRoutes.put('/user-list/:user_id/role', async (req: Request, res: Response) 
   const { user_id } = req.params;
 
   try {
-    let updatedUser: UserAttributes = await setUserRole(user_id, user_role);
+    const updatedUser: UserAttributes = await setUserRole(user_id, user_role);
     res.status(200).send(updatedUser);
   } catch (error: any) {
     res.status(500).json({ error: error.message });

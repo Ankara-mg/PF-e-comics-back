@@ -29,9 +29,11 @@ purchaseRoutes.post('/:user_id/cart', async (req: Request, res: Response) => {
 });
 
 purchaseRoutes.delete('/:user_id/cart', async (req: Request, res: Response) => {
-  let { comic, user_id } = req.body;
+  const { issue_data } = req.body;
+  const { user_id } = req.params;
+
   try {
-    const removed = await removeFromCart(comic, user_id);
+    const removed = await removeFromCart(issue_data, user_id);
 
     if (removed) {
       res.status(200).send({ msg: 'Removed from cart successfully.' });
@@ -44,7 +46,7 @@ purchaseRoutes.delete('/:user_id/cart', async (req: Request, res: Response) => {
 });
 
 purchaseRoutes.get('/:user_id/cart', async (req: Request, res: Response) => {
-  const { user_id, } = req.params;
+  const { user_id } = req.params;
 
   try {
     const issuesInCart = await getIssuesInCart(user_id);
@@ -53,8 +55,5 @@ purchaseRoutes.get('/:user_id/cart', async (req: Request, res: Response) => {
     res.status(500).json({ error: error.message });
   };
 });
-
-
-// purchaseRoutes.put('/', async (req: Request, res: Response) => { });
 
 export default purchaseRoutes;

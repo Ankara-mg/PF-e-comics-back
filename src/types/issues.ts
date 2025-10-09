@@ -3,7 +3,7 @@ import { Data, Image } from "./shared";
 export type IssueAttributes = {
   id: number;
   issue_number: number;
-  volume_id: number;
+  comic_id: number;
   name: string;
   price: number;
   image: string;

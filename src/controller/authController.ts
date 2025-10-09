@@ -34,7 +34,7 @@ export const loginUser = async (email: string, password: string) => {
 
     if (!SESSION_SECRET_ADMIN || !SESSION_SECRET_USER) throw new Error('Missing JWT secrets.');
 
-    let token: string = jwt.sign({ id: user.id }, user.role == 'admin' ? SESSION_SECRET_ADMIN : SESSION_SECRET_USER, { expiresIn: '1d' });
+    const token: string = jwt.sign({ id: user.id }, user.role == 'admin' ? SESSION_SECRET_ADMIN : SESSION_SECRET_USER, { expiresIn: '1d' });
     return { auth: true, token, role: user.role, name: user.username, id: user.id, email: user.email };
   } catch (error: any) {
     console.error(error.message);

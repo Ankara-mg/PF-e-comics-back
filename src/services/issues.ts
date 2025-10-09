@@ -1,7 +1,7 @@
 import axios from 'axios';
 import db from '../../models';
 import { IssueApiAttributes, IssueAttributes } from '@custom-types/issues';
-import { addComicToDb } from '../controller/comicsController';
+import { addComicToDb } from '../controller/comicController';
 
 const { API_KEY, API_URL } = process.env;
 
@@ -14,7 +14,7 @@ const fetchIssuesApi = async (comic_id: number) => {
     const issues: IssueAttributes[] = res?.data?.results?.map((issue: IssueApiAttributes) => ({
       id: issue.id,
       issue_number: issue.issue_number,
-        volume_id: issue.volume.id,
+        comic_id: issue.volume.id,
         release: issue.cover_date,
         name: issue.name,
         price: randomPrice,
